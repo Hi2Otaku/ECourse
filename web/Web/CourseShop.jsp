@@ -236,7 +236,7 @@
                                                 <div class="col-md-6 col-lg-6 col-xl-4">
                                                     <div class="rounded position-relative fruite-item">
                                                         <div class="fruite-img">
-                                                            <img src="img/lesson.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                                            <a href="CourseDetails?detailId=${x.getCourseID()}"><img src="img/lesson.jpg" class="img-fluid w-100 rounded-top" alt=""></a>
                                                         </div>                                            
                                                         <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                             <h4>${x.getCourseName()}</h4>
@@ -245,10 +245,7 @@
                                                                 <p class="text-dark fs-5 fw-bold mb-0">$ ${x.getPrice()}</p>
                                                                 <c:if test="${UserINS.checkIfCourseinCart(User.getUserID(), x.getCourseID()) == 0}">
                                                                     <button class="btn border border-secondary rounded-pill px-3 text-primary" onclick="addCart(${x.getCourseID()})"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
-                                                                </c:if>
-                                                                <c:if test="${UserINS.checkIfCourseinCart(User.getUserID(), x.getCourseID()) == 1}">
-                                                                    <a href="Cart" class="btn border border-secondary rounded-pill px-3 text-primary"> Go to Cart</a>
-                                                                </c:if>
+                                                                </c:if>                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -372,8 +369,7 @@
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
-
+        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>           
 
         <!-- JavaScript Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

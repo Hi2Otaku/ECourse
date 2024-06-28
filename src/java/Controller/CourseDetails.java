@@ -11,71 +11,77 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.*;
+import Models.*;
+import DAO.*;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author hi2ot
- */
-public class CourseDetails extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CourseDetails</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CourseDetails at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
+ */ 
+public class CourseDetails extends HttpServlet {      
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        
+        HttpSession ses = request.getSession();
+        User u = (User) ses.getAttribute("User");
+        
+        int detailId = -1;
+        
+        try {
+            detailId = Integer.parseInt(request.getParameter("detailId"));
+        } catch (NumberFormatException e) {
+            detailId = -1;
+        }
+        
+        if (detailId < 0) {
+            response.sendRedirect(request.getContextPath() + "/404.html");
+            return;
+        }
+        
+        Models.Course curCourse = CourseDAO.INS.getCourseById(detailId);
+        String courseCategory = CourseDAO.INS.getCourseCategory(detailId);
+        List<Models.Lesson> LessonList = LessonDAO.INS.loadLessonByCourseID(detailId);
+        List<Feedback> courseFeedback = CourseDAO.INS.getCourseFeedback(detailId);
+        
+        request.setAttribute("curCourse", curCourse);
+        request.setAttribute("courseCategory", courseCategory);
+        request.setAttribute("LessonList", LessonList);
+        request.setAttribute("UserINS", UserDAO.INS);
+        request.setAttribute("courseFeedback", courseFeedback);
+        
+        request.getRequestDispatcher("/Web/CourseDetails.jsp").forward(request, response);
     } 
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+    throws ServletException, IOException {        
+        
+        HttpSession ses = request.getSession();
+        User u = (User) ses.getAttribute("User");
+        
+        int buyId = -1;
+        try {
+            buyId = Integer.parseInt(request.getParameter("buyId"));
+            UserDAO.INS.addUserCart(u.getUserID(), buyId); 
+            response.sendRedirect(request.getContextPath() + "/CourseShop");
+            return;
+        } catch (NumberFormatException e) {
+            
+        }                                        
+                        
+        String addReview = request.getParameter("addReview");
+        if (addReview != null) {
+            String Review = request.getParameter("Review");
+            if (Review != null) {
+                UserDAO.INS.addFeedback(u.getUserID(), buyId, Review);
+            }
+        }
+        
+        doGet(request, response);
     }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

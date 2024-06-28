@@ -461,9 +461,55 @@ public class UserDAO {
         }
         return 0;
     }
+        
+    public String getNameById(int UserID) {
+        String sql = "Select * From [User] Where UserID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, UserID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getString("FullName");
+            }
+        }
+        catch (SQLException e) {
+            status = "Error at getNameById " + e.getMessage();
+        }
+        return null;
+    }
+    
+    public void addFeedback(int UserID, int CourseID, String Description) {
+        String sql = "Select * From [Feedback] Where CourseID = ?";
+        int cnt = 0;
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cnt++;
+            }
+        } catch (SQLException e) {
+            status = "Error at addFeedback " + e.getMessage();
+        }
+        
+        java.util.Date date = new java.util.Date();
+        java.sql.Date CreateDate = new java.sql.Date(date.getTime());
+        sql = "Insert Into [Feedback] Values(?,?,?,?,?)";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, UserID);
+            ps.setInt(2, CourseID);
+            ps.setInt(3, cnt + 1);
+            ps.setDate(4, CreateDate);
+            ps.setString(5, Description);
+            ps.execute();
+        } catch (SQLException e) {
+            status = "Error at addFeedback " + e.getMessage();
+        }
+    }
 
     public static void main(String agrs[]) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        INS.addUser("hi2otaku", "GsOpy/dpdR4kwix0FSVDIA==", "SVkAglOUIb6osRs8zi5IOQ==", "hi2otaku@gmail.com", "PQH", "04/04/2004", 2, "Food", 4);
+        INS.addFeedback(1, 1, "So good");
         System.out.println(INS.status);
     }
 }

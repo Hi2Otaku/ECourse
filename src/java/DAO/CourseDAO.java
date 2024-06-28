@@ -303,19 +303,67 @@ public class CourseDAO {
         return CourseList;
     }
     
+    public Course getCourseById(int CourseID) {
+        String sql = "Select * From [Course] Where CourseID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                String CourseName = rs.getString("CourseName");
+                float Price = rs.getFloat("Price");
+                String Description = rs.getString("Description");
+                java.sql.Date CreateDate = rs.getDate("CreateDate");
+                int UserID = rs.getInt("UserID");
+                return new Course(CourseID, CourseName, Price, Description, CreateDate, UserID);
+            }
+        } catch (SQLException e) {
+            status = "Error at getCourseByID " + e.getMessage();
+        }
+        return null;
+    }        
     
+    public String getCourseCategory(int CourseID) {
+        String sql = "Select c.* From [CourseCategory] cc"
+                + "\n Join [Category] c On c.CategoryID = cc.CategoryID"
+                + "\n Where cc.CourseID = ?";
+        String courseCategory = "";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                                
+                String CategoryName = rs.getString("CategoryName");
+                courseCategory = courseCategory.concat(CategoryName + ", ");
+            }
+        } catch (SQLException e) {
+            status = "Error at getCourseCategory " + e.getMessage();
+        }        
+        return courseCategory;
+    }
+    
+    public ArrayList<Feedback> getCourseFeedback(int CourseID) {
+        String sql = "Select * From [Feedback] Where CourseID = ?";
+        ArrayList<Feedback> courseFeedback = new ArrayList<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);            
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int UserID = rs.getInt("UserID");
+                int FeedbackID = rs.getInt("FeedbackID");
+                java.sql.Date CreateDate = rs.getDate("CreateDate");
+                String Description = rs.getString("Description");
+                courseFeedback.add(new Feedback(UserID, CourseID, FeedbackID, CreateDate, Description));
+            }
+        } catch (SQLException e) {
+            status = "Error at getCourseFeedback " + e.getMessage();
+        }
+        return courseFeedback;
+    }
     
     public static void main (String[] agrs) {                 
-        List<Category> cl = new ArrayList<>();
-        List<Subject> sl = new ArrayList<>();
-        Category cat = new Category(1, "Math");
-        cl.add(new Category(1, "Math"));
-        cl.add(new Category(2, "English"));
-        sl.add(new Subject(2, "Web Develop"));        
-        List<Integer> catNum = new ArrayList<>();
-        catNum.add(1);
-        catNum.add(2);
-        System.out.println(catNum.contains(cat.getCategoryID()));
+        List<Feedback> fb = INS.getCourseFeedback(1);
         System.out.println(INS.status);
     }
     
