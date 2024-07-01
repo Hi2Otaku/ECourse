@@ -406,9 +406,63 @@ public class CourseDAO {
         return INS.getCourseList(checkedCategory, checkedSubject);
     }
     
+    public List<Category> getCategoryByCourse(int CourseID) {
+        String sql = "Select c.* From [Category] c "
+                + "\n Join [CourseCategory] cc On c.CategoryID = cc.CategoryID"
+                + "\n Where cc.CourseID = ?";
+        List<Category> CategoryList = new ArrayList<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int CategoryID = rs.getInt("CategoryID");
+                String CategoryName = rs.getString("CategoryName");
+                CategoryList.add(new Category(CategoryID, CategoryName));
+            }
+        } catch (SQLException e) {
+            status = "Error at getCategoryByCourse " + e.getMessage();
+        }
+        return CategoryList;
+    }
+    
+    public List<Subject> getSubjectByCourse(int CourseID) {
+        String sql = "Select s.* From [Subject] s"
+                + "\n Join [CourseSubject] cs On s.SubjectID = cs.SubjectID"
+                + "\n Where cs.CourseID = ?";
+        List<Subject> SubjectList = new ArrayList<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int SubjectID = rs.getInt("SubjectID");
+                String SubjectName = rs.getString("SubjectName");
+                SubjectList.add(new Subject(SubjectID, SubjectName));
+            }
+        } catch (SQLException e) {
+            status = "Error at getSubjectByCourse " + e.getMessage();
+        }
+        return SubjectList;
+    }
+    
+    public float getCourseDiscount(int CourseID) {
+        String sql = "Select * From [Discount] Where CourseID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getFloat("Percentage");
+            }
+        } catch (SQLException e) {
+            status = "Error at getCourseDiscount " + e.getMessage();
+        }
+        return 0;
+    }
+    
     public static void main(String[] agrs) {                 
-        List<Course> c = INS.getRelatedCourse(4);
-        System.out.println(c.size());
+        INS.getSubjectByCourse(1);
         System.out.println(INS.status);
     }
     
