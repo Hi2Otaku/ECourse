@@ -8,9 +8,12 @@ import java.sql.Connection;
 import java.util.*;
 import Models.*;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
@@ -70,7 +73,7 @@ public class UserDAO {
     }
 
     public Vector<Course> loadUserOwnCourse(int UserID) {
-        String sql = "Select c.CourseID, c.CourseName, c.Price, c.Description, c.CreateDate, c. From [OwnCourse] oc Join [Course] c On oc.CourseID = c.CourseID Where oc.UserID = ?";
+        String sql = "Select c.* From [OwnCourse] oc Join [Course] c On oc.CourseID = c.CourseID Where oc.UserID = ?";
         Vector<Course> course = new Vector<Course>();
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -354,8 +357,6 @@ public class UserDAO {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] hash = factory.generateSecret(spec).getEncoded();
             Base64.Encoder enc = Base64.getEncoder();
-            System.out.println(uPassword);
-            System.out.println(enc.encodeToString(hash));
             if (!enc.encodeToString(hash).equals(uPassword)) {
                 return "Wrong Password!";
             }
@@ -445,8 +446,8 @@ public class UserDAO {
             status = "Error at addUserCart " + e.getMessage();
         }
     }
-    
-        public int checkIfCourseinCart(int UserID, int CourseID) {
+
+    public int checkIfCourseinCart(int UserID, int CourseID) {
         String sql = "Select * From [Cart] Where UserID = ? And CourseID = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -461,7 +462,7 @@ public class UserDAO {
         }
         return 0;
     }
-        
+
     public String getNameById(int UserID) {
         String sql = "Select * From [User] Where UserID = ?";
         try {
@@ -471,13 +472,12 @@ public class UserDAO {
             while (rs.next()) {
                 return rs.getString("FullName");
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             status = "Error at getNameById " + e.getMessage();
         }
         return null;
     }
-    
+
     public void addFeedback(int UserID, int CourseID, String Description) {
         String sql = "Select * From [Feedback] Where CourseID = ?";
         int cnt = 0;
@@ -491,7 +491,7 @@ public class UserDAO {
         } catch (SQLException e) {
             status = "Error at addFeedback " + e.getMessage();
         }
-        
+
         java.util.Date date = new java.util.Date();
         java.sql.Date CreateDate = new java.sql.Date(date.getTime());
         sql = "Insert Into [Feedback] Values(?,?,?,?,?)";
@@ -508,8 +508,241 @@ public class UserDAO {
         }
     }
 
+    public void updateProfile(int UserID, String Fullname, String dob, int SQ, String Answer) {
+        String sql = "Update [User]"
+                + "\n Set FullName = ?, DoB = ?, SecurityQuestionID = ?, Answer = ?"
+                + "\n Where UserID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, Fullname);
+            ps.setString(2, dob);
+            ps.setInt(3, SQ);
+            ps.setString(4, Answer);
+            ps.setInt(5, UserID);
+            ps.execute();
+        } catch (SQLException e) {
+            status = "Error at updateProfile " + e.getMessage();
+        }
+    }
+
+    public String changePass(int UserID, String oldpass, String newpass, String confirm) throws InvalidKeySpecException {
+        try {
+            String sql = "Select * From [User] Where UserID = ?";
+            String pass = "";
+            String ssalt = "";
+            try {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, UserID);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    pass = rs.getString("Password");
+                    ssalt = rs.getString("salt");
+                }
+            } catch (SQLException e) {
+                status = "Error at changePass " + e.getMessage();
+            }
+
+            Base64.Decoder dnc = Base64.getDecoder();
+            byte[] salt = dnc.decode(ssalt);
+            KeySpec spec = new PBEKeySpec(oldpass.toCharArray(), salt, 65536, 128);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            byte[] hash = factory.generateSecret(spec).getEncoded();
+            Base64.Encoder enc = Base64.getEncoder();
+            if (!enc.encodeToString(hash).equals(pass)) {
+                return "Wrong Password!";
+            } else if (!newpass.equals(confirm)) {
+                return "Confirm Password Not Match!";
+            }
+
+            SecureRandom random = new SecureRandom();
+            random.nextBytes(salt);
+            spec = new PBEKeySpec(newpass.toCharArray(), salt, 65536, 128);
+            hash = factory.generateSecret(spec).getEncoded();
+
+            sql = "Update [User]"
+                    + "\n Set Password = ?, salt = ?"
+                    + "\n Where UserID = ?";
+            try {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setString(1, enc.encodeToString(hash));
+                ps.setString(2, enc.encodeToString(salt));
+                ps.setInt(3, UserID);
+                ps.execute();
+                return null;
+            } catch (SQLException e) {
+                status = "Error at changePassword " + e.getMessage();
+            }
+
+            return "Undefined Error!";
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return "Undefined Error!";
+        }
+    }
+
+    public float getCourseProgress(int UserID, int CourseID) {
+        float inum = 0;
+        float cnum = 0;
+        List<Lesson> LessonList = LessonDAO.INS.loadLessonByCourseID(CourseID);
+        for (Lesson x : LessonList) {
+            List<LessonDoc> DocList = LessonDAO.INS.loadLessonDoc(CourseID, x.getLessonID());
+            for (LessonDoc y : DocList) {
+                String sql = "Select * From [DocProgress] Where UserID = ? And CourseID = ? And LessonID = ? And DocID = ?";
+                try {
+                    PreparedStatement ps = con.prepareStatement(sql);
+                    ps.setInt(1, UserID);
+                    ps.setInt(2, CourseID);
+                    ps.setInt(3, x.getLessonID());
+                    ps.setInt(4, y.getDocID());
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        inum++;
+                        if (rs.getInt("Status") == 1) {
+                            cnum++;
+                        }
+                    }
+                } catch (SQLException e) {
+                    status = "Error at getCourseProgress " + e.getMessage();
+                    return 0;
+                }
+            }
+
+            List<Quiz> QuizList = QuizDAO.INS.loadQuizByLesson(CourseID, x.getLessonID());
+            for (Quiz y : QuizList) {
+                String sql = "Select * From [QuizProgress] Where UserID = ? And CourseID = ? And LessonID = ? And QuizID = ?";
+                try {
+                    PreparedStatement ps = con.prepareStatement(sql);
+                    ps.setInt(1, UserID);
+                    ps.setInt(2, CourseID);
+                    ps.setInt(3, x.getLessonID());
+                    ps.setInt(4, y.getQuizID());
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        inum++;
+                        if (rs.getInt("Status") == 1) {
+                            cnum++;
+                        }
+                    }
+                } catch (SQLException e) {
+                    status = "Error at getCourseProgress " + e.getMessage();
+                    return 0;
+                }
+            }
+        }
+        System.out.println(inum);
+        if (inum != 0) {
+            return (float) (cnum / inum) * 100;
+        } else {
+            return 0;
+        }
+    }
+
+    public void addDocProgress(int UserID, int CourseID, int LessonID) {
+        List<LessonDoc> DocList = LessonDAO.INS.loadLessonDoc(CourseID, LessonID);
+        String sql = "Insert Into [DocProgress] Values(?,?,?,?,?)";
+        for (LessonDoc x : DocList) {
+            try {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, UserID);
+                ps.setInt(2, CourseID);
+                ps.setInt(3, LessonID);
+                ps.setInt(4, x.getDocID());
+                ps.setInt(5, 0);
+                ps.execute();
+            } catch (SQLException e) {
+                status = "Error at addDocProgress " + e.getMessage();
+            }
+        }
+    }
+
+    public void addQuizProgress(int UserID, int CourseID, int LessonID) {
+        List<Quiz> QuizList = QuizDAO.INS.loadQuizByLesson(CourseID, LessonID);
+        String sql = "Insert Into [QuizProgress] Values(?,?,?,?,?)";
+        for (Quiz x : QuizList) {
+            try {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, UserID);
+                ps.setInt(2, CourseID);
+                ps.setInt(3, LessonID);
+                ps.setInt(4, x.getQuizID());
+                ps.setInt(5, 0);
+                ps.execute();
+            } catch (SQLException e) {
+                status = "Error at addQuizProgress " + e.getMessage();
+            }
+        }
+    }
+
+    public int getQuizProgress(int UserID, int CourseID, int LessonID, int QuizID) {
+        String sql = "Select * From [QuizProgress] Where UserID = ? And CourseID = ? And LessonID = ? And QuizID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, UserID);
+            ps.setInt(2, CourseID);
+            ps.setInt(3, LessonID);
+            ps.setInt(4, QuizID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("Status");
+            }
+        } catch (SQLException e) {
+            status = "Error at getQuizProgress " + e.getMessage();
+        }
+        return 0;
+    }
+
+    public int getDocProgress(int UserID, int CourseID, int LessonID, int DocID) {
+        String sql = "Select * From [DocProgress] Where UserID = ? And CourseID = ? And LessonID = ? And DocID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, UserID);
+            ps.setInt(2, CourseID);
+            ps.setInt(3, LessonID);
+            ps.setInt(4, DocID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("Status");
+            }
+        } catch (SQLException e) {
+            status = "Error at getDocProgress " + e.getMessage();
+        }
+        return 0;
+    }
+
+    public void updateDocProgress(int UserID, int CourseID, int LessonID, int DocID) {
+        String sql = "Update [DocProgress]"
+                + "\n Set Status = 1"
+                + "\n Where UserID = ? And CourseID = ? And LessonID = ? And DocID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, UserID);
+            ps.setInt(2, CourseID);
+            ps.setInt(3, LessonID);
+            ps.setInt(4, DocID);
+            ps.execute();
+        } catch (SQLException e) {
+            status = "Error at updateDocProgress " + e.getMessage();
+        }
+    }
+
+    public void updateQuizProgress(int UserID, int CourseID, int LessonID, int QuizID) {
+        String sql = "Update [QuizProgress]"
+                + "\n Set Status = 1"
+                + "\n Where UserID = ? And CourseID = ? And LessonID = ? And QuizID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, UserID);
+            ps.setInt(2, CourseID);
+            ps.setInt(3, LessonID);
+            ps.setInt(4, QuizID);
+            ps.execute();
+        } catch (SQLException e) {
+            status = "Error at updateQuizProgress " + e.getMessage();
+        }
+    }
+
     public static void main(String agrs[]) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        INS.addFeedback(1, 1, "So good");
+        System.out.println(INS.getDocProgress(4, 1, 1, 1));
         System.out.println(INS.status);
     }
 }

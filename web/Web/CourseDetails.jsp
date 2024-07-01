@@ -49,10 +49,10 @@
                 document.getElementById("buyId").value = courseID;
                 submitShop();
             }
-            function addReview(){
-                document.getElementById("addReivew").value = "true";
-                window.alert(document.getElementById("addReivew").value);
-                document.getElementById("review").submit();
+            function addReview() {
+                document.getElementById("addR").value = 1;
+                window.alert(document.getElementById("rvId").value);
+                document.getElementById("rv").submit();
             }
         </script>
     </head>
@@ -89,24 +89,16 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="shop.html" class="nav-item nav-link active">Shop</a>
-                            <a href="shop-detail.html" class="nav-item nav-link">My Courses</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.html" class="dropdown-item">Cart</a>
-                                    <a href="chackout.html" class="dropdown-item">Checkout</a>                                    
-                                    <a href="404.html" class="dropdown-item">404 Page</a>
-                                </div>
-                            </div>
+                            <a href="Home" class="nav-item nav-link">Home</a>
+                            <a href="CourseShop" class="nav-item nav-link active">Shop</a>
+                            <a href="MyCourse" class="nav-item nav-link">My Courses</a>                                                            
+                            <a href="Cart" class="nav-item nav-link">Cart</a>                                                                                                            
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                             <a href="#" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                                <i class="fa fa-shopping-bag fa-2x"></i>                                
                             </a>
                             <a href="#" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
@@ -163,27 +155,33 @@
                                     </a>
                                 </div>
                             </div>
+
                             <div class="col-lg-6">
-                                <h4 class="fw-bold mb-3">${curCourse.getCourseName()}</h4>
-                                <p class="mb-3">Category: ${courseCategory} </p>
-                                <h5 class="fw-bold mb-3">${curCourse.getPrice()} $</h5> 
-                                <p class="mb-4">${curCourse.getDescription()}</p>                   
-                                <c:if test="${UserINS.checkIfCourseinCart(User.getUserID(), curCourse.getCourseID()) == 0}">
-                                    <c:if test="${UserINS.checkOwnCourse(User.getUserID(), curCourse.getCourseID()) == 0}">
-                                        <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                    </c:if>
-                                </c:if> 
-                                <c:if test="${UserINS.checkIfCourseinCart(User.getUserID(), curCourse.getCourseID()) == 1}">
-                                    <br/>
-                                    <br/>
-                                    <h4>Course Has Already Added In Your Cart!</h4>
-                                </c:if> 
-                                <c:if test="${UserINS.checkOwnCourse(User.getUserID(), curCourse.getCourseID()) == 1}">
-                                    <br/>
-                                    <br/>
-                                    <h4>You Have Already Bought This Course!</h4>
-                                </c:if> 
+                                <form action="CourseDetails" method="post" id="shop">
+                                    <input type="text" name="buyId" value id="buyId" hidden>
+                                    <input type="text" name="detailId" value="${curCourse.getCourseID()}" hidden>
+                                    <h4 class="fw-bold mb-3">${curCourse.getCourseName()}</h4>
+                                    <p class="mb-3">Category: ${courseCategory} </p>
+                                    <h5 class="fw-bold mb-3">${curCourse.getPrice()} $</h5> 
+                                    <p class="mb-4">${curCourse.getDescription()}</p>                   
+                                    <c:if test="${UserINS.checkIfCourseinCart(User.getUserID(), curCourse.getCourseID()) == 0}">
+                                        <c:if test="${UserINS.checkOwnCourse(User.getUserID(), curCourse.getCourseID()) == 0}">
+                                            <button class="btn border border-secondary rounded-pill px-3 text-primary" onclick="addCart(${curCourse.getCourseID()})"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
+                                        </c:if>
+                                    </c:if> 
+                                    <c:if test="${UserINS.checkIfCourseinCart(User.getUserID(), curCourse.getCourseID()) == 1}">
+                                        <br/>
+                                        <br/>
+                                        <h4>Course Has Already Added In Your Cart!</h4>
+                                    </c:if> 
+                                    <c:if test="${UserINS.checkOwnCourse(User.getUserID(), curCourse.getCourseID()) == 1}">
+                                        <br/>
+                                        <br/>
+                                        <h4>You Have Already Bought This Course!</h4>
+                                    </c:if> 
+                                </form>
                             </div>
+
                             <div class="col-lg-12">
                                 <nav>
                                     <div class="nav nav-tabs mb-3">
@@ -220,23 +218,22 @@
                                     </div>                                  
                                 </div>
                             </div>
-                            <form action="CourseDetails" method="post" id="review">
-                                <input type="text" name="addReview" id="addReview" value hidden>
-                                <input type="text" name="detailId" value="${curCourse.getCourseID()}" hidden>
+                            <form action="CourseDetails" method="post" id="rv">
+                                <input type="text" name="addR" id="addR" value hidden>
+                                <input type="text" name="detailId" value="${curCourse.getCourseID()}" id="detailId" hidden>
                                 <h4 class="mb-5 fw-bold">Leave a Reply</h4>
                                 <div class="row g-4">                                                                        
                                     <div class="col-lg-12">
                                         <div class="border-bottom rounded my-4">
-                                            <textarea name="Review" id="" class="form-control border-0" cols="30" rows="8" placeholder="Your Review *" spellcheck="false" required></textarea>
+                                            <input type="text" name="Review" id="Review" class="form-control border-0" placeholder="Your Review *" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="d-flex justify-content-between py-3 mb-5">                                            
-                                            <button class="btn border border-secondary text-primary rounded-pill px-4 py-3" onclick="addReview()"> Post Comment</button>
+                                            <button class="btn border border-secondary rounded-pill px-3 text-primary" onclick="addReview()"> Post Comment</button>
                                         </div>
                                     </div>
                                 </div>
-                                
                             </form>
                         </div>
                     </div>
@@ -249,43 +246,24 @@
                                 </div>
                                 <div class="mb-4">
                                     <h4>Categories</h4>
-                                    <ul class="list-unstyled fruite-categorie">
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
-                                                <span>(3)</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
-                                                <span>(5)</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
-                                                <span>(2)</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Banana</a>
-                                                <span>(8)</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
-                                                <span>(5)</span>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    <c:forEach items="${CategoryList}" var="x">                                            
+                                        <div class="d-flex justify-content-between fruite-name">
+                                            <a href="CourseShop?Category${x.getCategoryID()}=1">${x.getCategoryName()} </a>                                                
+                                            <span>(${CourseINS.loadCategoryPNumber(x.getCategoryID())})</span>
+                                        </div>                                                                                                                                                                     
+                                    </c:forEach>  
+                                    <br/>
+                                    <h4>Subjects</h4>
+                                    <c:forEach items="${SubjectList}" var="x">
+                                        <div class="d-flex justify-content-between fruite-name">
+                                            <a href="CourseShop?Subject${x.getSubjectID()}=1">${x.getSubjectName()} </a>                                                                                            
+                                        </div> 
+                                    </c:forEach>                                     
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <h4 class="mb-4">Featured products</h4>
-                                <div class="d-flex align-items-center justify-content-start">
+                                <h4 class="mb-4">Recent views</h4>
+<!--                                <div class="d-flex align-items-center justify-content-start">
                                     <div class="rounded" style="width: 100px; height: 100px;">
                                         <img src="img/featur-1.jpg" class="img-fluid rounded" alt="Image">
                                     </div>
@@ -303,232 +281,31 @@
                                             <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded" style="width: 100px; height: 100px;">
-                                        <img src="img/featur-2.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded" style="width: 100px; height: 100px;">
-                                        <img src="img/featur-3.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="img/vegetable-item-4.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="img/vegetable-item-5.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="img/vegetable-item-6.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-center my-4">
-                                    <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="position-relative">
-                                    <img src="img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
-                                    <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
-                                        <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
-                                    </div>
-                                </div>
-                            </div>
+                                </div>                                                               -->
+                            </div>                            
                         </div>
                     </div>
                 </div>
                 <h1 class="fw-bold mb-0">Related products</h1>
-                <div class="vesitable">
-                    <div class="owl-carousel vegetable-carousel justify-content-center">
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Parsely</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                <div class="vesitable">                    
+                    <div class="owl-carousel vegetable-carousel justify-content-center">         
+                        <c:forEach items="${relatedCourse}" var="x">
+                            <c:if test="${x.getCourseID() != curCourse.getCourseID()}">
+                                <div class="border border-primary rounded position-relative vesitable-item">
+                                    <div class="vesitable-img">
+                                        <img src="img/lesson.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                    </div>
+                                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
+                                    <div class="p-4 pb-0 rounded-bottom">
+                                        <h4>${x.getCourseName()}</h4>
+                                        <p>${x.getDescription()}</p>
+                                        <div class="d-flex justify-content-between flex-lg-wrap">
+                                            <p class="text-dark fs-5 fw-bold">$ ${x.getPrice()}</p>                                        
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-1.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Parsely</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-3.png" class="img-fluid w-100 rounded-top bg-light" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Banana</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-4.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Bell Papper</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Potatoes</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Parsely</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Potatoes</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>Parsely</h4>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
+                            </c:if>
+                        </c:forEach>                        
                     </div>
                 </div>
             </div>

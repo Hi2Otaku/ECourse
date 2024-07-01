@@ -58,12 +58,12 @@
         <!-- Navbar End -->                   
 
         <!-- Fact Start -->
-        <div class="container-fluid py-5 row ">      
+        <div class="container-fluid py-5 row">      
             <div class="col-lg-3"></div>
             <div class="col-lg-6">
                 <form action="Register" method="post">      
                     <div class="form-control bg-white px-4">
-                        <div class="col-lg-12 col-md-12 col-xl-12">
+                        <div class="col-lg-12 col-md-12 col-xl-12">                            
                             <table style="width: 100%" class="text-center">
                                 <tr>
                                     <th>Username </th>
@@ -91,7 +91,7 @@
                                 </tr>
                                 <tr>
                                     <th>Security Question: </th>
-                                    <td><select name="SQ" class="form-control border px-4 rounded-pill">
+                                    <td><select name="SQ" class="form-control border px-4 rounded-pill bg-white">
                                             <c:forEach items="${SQuestionList}" var="x">
                                                 <option value="${x.getSecutiryQuestionID()}">${x.getQuestion()}</option>
                                             </c:forEach>

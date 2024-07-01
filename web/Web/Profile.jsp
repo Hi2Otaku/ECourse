@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Cart
-    Created on : Jun 20, 2024, 6:20:46 AM
+    Document   : CourseShop
+    Created on : Jun 27, 2024, 2:25:58 PM
     Author     : hi2ot
 --%>
 
@@ -11,7 +11,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Cart</title>
+        <title>Profile</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -35,18 +35,19 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
-
         <script>
-            function deleteCourse(x) {
-                document.getElementById("CourseID").value = x;
-                document.getElementById("mainform").submit();
-            }
-
-            function goContact() {
-                document.getElementById("goContact").submit();
-            }
-
         </script>
+
+        <style>
+            th, td {
+                padding: 10px
+            }
+
+            td {
+                width: 500px
+            }
+        </style>
+
     </head>
 
     <body>
@@ -55,8 +56,7 @@
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
         </div>
-        <!-- Spinner End -->
-
+        <!-- Spinner End -->               
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
@@ -81,10 +81,16 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="Home" class="nav-item nav-link">Home</a>
-                            <a href="CourseShop" class="nav-item nav-link">Shop</a>
-                            <a href="MyCourse" class="nav-item nav-link">My Courses</a>                                                            
-                            <a href="Cart" class="nav-item nav-link active">Cart</a>                                                                                                            
+                            <a href="index.html" class="nav-item nav-link">Home</a>
+                            <a href="CourseShop" class="nav-item nav-link active">Shop</a>
+                            <a href="MyCourse" class="nav-item nav-link">My Courses</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="Cart" class="dropdown-item">Cart</a>                                                                        
+                                    <a href="404.html" class="dropdown-item">404 Page</a>
+                                </div>
+                            </div>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
@@ -125,82 +131,94 @@
 
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">Cart</h1>
+            <h1 class="text-center text-white display-6">Profile</h1>
             <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                <li class="breadcrumb-item active text-white">Cart</li>
+                <li class="breadcrumb-item"><a href="Home">Home</a></li>                
+                <li class="breadcrumb-item active text-white">Profile</li>
             </ol>
-        </div>
-        <!-- Single Page Header End -->
+        </div>                
+        <!-- Single Page Header End -->     
 
-
-        <!-- Cart Page Start -->        
-        <div class="container-fluid py-5">
-            <div class="container py-5">
-                <div class="table-responsive">
-                    <form action="Cart" method="post" id="mainform">
-                        <input type="text" name="CourseID" value="" id="CourseID" hidden>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th scope="col">Course</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Price</th>                                                        
-                                    <th scope="col">Handle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${CourseList}" var="cl">
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="d-flex align-items-center">
-                                                <img src="img/lesson.jpg" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
-                                            </div>
-                                        </th>                                                                                
-                                        <td>
-                                            <p class="mb-0 mt-4">${cl.getCourseName()}</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 mt-4">${cl.getDescription()}</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 mt-4">${cl.getPrice()} $</p>                                                           
-                                        </td>                            
-                                        <td>
-                                            <button class="btn btn-md rounded-circle bg-light border mt-4" name="CourseID" value="${cl.getCourseID()}" id="Del" onclick="deleteCourse(${cl.getCourseID()})">
-                                                <i class="fa fa-times text-danger"></i>
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </form>
-                </div>                
-                <form action="CartContact" method="post" id="goContact">
-                    <div class="row g-4 justify-content-end">
-                        <div class="col-8"></div>
-                        <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                            <div class="bg-light rounded">
-                                <div class="p-4">
-                                    <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>                                                         
-                                </div>
-                                <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                    <h5 class="mb-0 ps-4 me-4">Total</h5>
-                                    <p class="mb-0 pe-4">${total} $</p>
-                                </div>
-                                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button" onclick="goContact()">Proceed Checkout</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+        <div class="container-fluid py-5 row">
+            <div class="col-lg-1">                
             </div>
-        </div>
-        <!-- Cart Page End -->
 
+            <div class="col-lg-3 align-items-center">
+                <div class="counter bg-white rounded p-5">      
+                    <img src="img/avatar.jpg" alt="alt" class="img-fluid w-100 rounded-top"/>                    
+                    <div style="margin-top: 20%">
+                        <h4>${User.getFullName()}</h4>
+                        <c:if test="${User.getRole() == 4}">
+                            <p>Number of Courses: ${CourseList.size()}</p>                        
+                        </c:if>
+                    </div>
+                        <table>
+                            <tr>                                
+                                <td><a href="ChangePassword">Change Password</a> </td>
+                            </tr>
+                            
+                            <tr>
+                                <td><a href="Logout" class="btn btn-primary border-2 border-secondary text-white">Logout</a></td>
+                            </tr>
+                        </table>
+                </div>
+            </div>
+
+            <div class="col-lg-7 align-items-center">
+                <div class="counter bg-white rounded p-5">
+                    <form action="Profile" method="post">
+                        <table>
+                            <tr>
+                                <th>Username: </th>
+                                <td><input type="text" name="UserName" value="${User.getUserName()}" class="form-control border-2 px-4" disabled></td>
+                            </tr>
+                            <tr>
+                                <th>Fullname: </th>
+                                <td><input type="text" name="FullName" value="${User.getFullName()}" class="form-control border-2 px-4" required></td>
+                            </tr>                    
+                            <tr>
+                                <th>Mail: </th>
+                                <td><input type="text" name="Mail" value="${User.getMail()}" class="form-control border-2 px-4" disabled></td>
+                            </tr>
+                            <tr>
+                                <th>Date of Birth: </th>
+                                <td><input type="date" name="dob" value="${User.getDoB()}" id="dob" class="form-control border-2 px-4" max="${maxDate}" required></td>
+                            </tr>
+                            <tr>
+                                <th>Security Question: </th>
+                                <td><select name="SQ" class="form-control border-2 px-4 bg-white">
+                                        <c:forEach items="${SEQuestionList}" var="x">
+                                            <option value="${x.getSecutiryQuestionID()}"
+                                                    <c:if test="${x.getSecutiryQuestionID() == User.getSecurityQuestionID()}">
+                                                        selected
+                                                    </c:if>>${x.getQuestion()}</option>
+                                        </c:forEach>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <th>Answer: </th>
+                                <td><input type="text" name="Answer" value="${User.getAnswer()}" class="form-control border-2 px-4" required></td>
+                            </tr>
+                            <tr>
+                                <th>Role: </th>
+                                <td>
+                                    <c:if test="${User.getRole() == 2}">
+                                        <input type="text" name="Role" value="Expert" class="form-control border-2 px-4" disabled>
+                                    </c:if>
+                                    <c:if test="${User.getRole() == 4}">
+                                        <input type="text" name="Role" value="Learner" class="form-control border-2 px-4" disabled>
+                                    </c:if>
+                                </td>
+                            </tr>
+                        </table>
+                        <input type="submit" name="update" value="Update Profile" class="btn btn-primary border-2 border-secondary px-3 rounded-pill text-white" style="margin-top: 20px">
+                        <p>${inform}</p>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-1"></div>
+        </div>
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -296,8 +314,7 @@
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
-
+        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>           
 
         <!-- JavaScript Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

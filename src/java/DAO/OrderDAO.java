@@ -28,7 +28,7 @@ public class OrderDAO {
     }
     
     public int createOrder(int UserID, float Price) {
-        String sql = "Select Top 1 OrderID From [Order] Where UserID = ?";
+        String sql = "Select Top 1 OrderID From [Order] Where UserID = ? Order By CreateDate desc";
         int OrderID = 0;
         try {
             PreparedStatement ps = con.prepareStatement(sql);

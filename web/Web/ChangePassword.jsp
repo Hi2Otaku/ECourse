@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Quizing
-    Created on : May 28, 2024, 4:15:45 PM
+    Document   : CourseShop
+    Created on : Jun 27, 2024, 2:25:58 PM
     Author     : hi2ot
 --%>
 
@@ -11,7 +11,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Quizing</title>
+        <title>Profile</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -36,34 +36,18 @@
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
         <script>
-            
-            let x = setInterval(function () {                
-                let countdownDate = document.getElementById("date").value;        
-                let now = new Date().getTime();
-                
-                let distance = now - countdownDate;          
-                
-                let limit = document.getElementById("limit").value;
-
-                let hours = Math.floor(((limit * 1000 - distance) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let minutes = Math.floor(((limit * 1000 - distance) % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor(((limit * 1000 - distance) % (1000 * 60)) / 1000);
-                document.getElementById("LiveTime").innerHTML = hours + ":" + minutes + ":" + seconds;
-                now--;                
-                localStorage.removeItem("Time");
-
-                if (hours <= 0 && minutes <= 0 && seconds <= 0) {                    
-                    localStorage.removeItem("Time");
-                    document.getElementById("BtnFinish").value = "Yes";
-                    document.getElementById("finish").submit();
-                }
-            }, 1000);
-            
-            function setFinish() {
-                document.getElementById("BtnFinish").value = "Yes";
-                document.getElementById("finish").submit();
-            }                       
         </script>
+
+        <style>
+            th, td {
+                padding: 10px
+            }
+
+            td {
+                width: 500px
+            }
+        </style>
+
     </head>
 
     <body>
@@ -72,8 +56,7 @@
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
         </div>
-        <!-- Spinner End -->
-
+        <!-- Spinner End -->               
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
@@ -100,7 +83,7 @@
                         <div class="navbar-nav mx-auto">
                             <a href="Home" class="nav-item nav-link">Home</a>
                             <a href="CourseShop" class="nav-item nav-link">Shop</a>
-                            <a href="MyCourse" class="nav-item nav-link active">My Courses</a>                                                            
+                            <a href="MyCourse" class="nav-item nav-link">My Courses</a>                                                            
                             <a href="Cart" class="nav-item nav-link">Cart</a>                                                                                                            
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
@@ -137,91 +120,138 @@
                 </div>
             </div>
         </div>
-        <!-- Modal Search End -->        
+        <!-- Modal Search End -->
 
 
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">Quizing</h1>
+            <h1 class="text-center text-white display-6">Profile</h1>
             <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Quiz</a></li>
-                <li class="breadcrumb-item active text-white">Quizing</li>
+                <li class="breadcrumb-item"><a href="Home">Home</a></li>                
+                <li class="breadcrumb-item active text-white">Profile</li>
             </ol>
-        </div>
-        <!-- Single Page Header End -->
+        </div>                
+        <!-- Single Page Header End -->     
 
+        <div class="container-fluid py-5 row">
+            <div class="col-lg-1">                
+            </div>
 
-        <!-- Single Product Start -->
-        <form action="Quizing" method="post" id="finish">   
-            <input type="text" name="CourseID" value="${CourseID}" hidden>
-            <input type="text" name="LessonID" value="${LessonID}" hidden>
-            <input type="text" name="QuizID" value="${QuizID}" hidden> 
-            <input type="text" name="AttemptID" value="${AttemptID}" hidden>
-            <input type="text" name="index" value="${index}" hidden>            
-            <input type="text" name="date" value="${date}" id="date" hidden>
-            <input type="text" name="limit" value="${limit}" id="limit" hidden>
-            <input typt="text" name="BtnFinish" id="BtnFinish" value="No" hidden>            
-            <div class="container-fluid py-5 mt-5">
-                <div class="container py-5">
-                    <div class="row g-4 mb-5">
-                        <div class="col-lg-8 col-xl-9">
-                            <div class="row g-4">                            
-                                <div class="col-lg-12">
-                                    <h4 class="fw-bold mb-3">Question ${QuestionList.indexOf(Question) + 1}</h4>
-                                    <p class="mb-3">${Question.getQuestion()}</p>
-                                    <table>
-                                        <c:set var="UserAnswer" value="${QuestionINS.loadUserQuestionAnswer(CourseID, LessonID, QuizID, Question.getQuestionID(), User.getUserID(), AttemptID)}"></c:set>
-                                        <c:set var="Attempt" value="${UserINS.getNewestAttempt(User.getUserID(), CourseID, LessonID, QuizID)}"></c:set>
-
-                                        <c:forEach items="${QuestionINS.loadQuestionAnswer(CourseID, LessonID, QuizID, Question.getQuestionID())}" var="x"> 
-                                            <c:if test="${x.getAnswerID() == UserAnswer.getAnswerID()}">
-                                                <input type="radio" name="AnswerID" value="${x.getAnswerID()}" checked> ${x.getDescription()}  
-                                            </c:if>
-                                            <c:if test="${x.getAnswerID() != UserAnswer.getAnswerID()}">
-                                                <input type="radio" name="AnswerID" value="${x.getAnswerID()}"> ${x.getDescription()}  
-                                            </c:if>
-                                            <br/>
-                                        </c:forEach>                      
-
-                                    </table>                                    
-                                    <c:if test="${index != 0}">
-                                        <input type="submit" class="btn border border-secondary round-pill text-primary" name="BtnPrev" value="Prev">
-                                    </c:if>
-                                    <c:if test="${index != QuestionList.size() - 1}">
-                                        <input type="submit" class="btn border border-secondary round-pill text-primary" name="BtnNext" value="Next">
-                                    </c:if>
-                                </div>                                                
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-xl-3">                            
-                            <div class="col-lg-12">                               
-                                <div class="mt-5">
-                                    <h4>Time: </h4>
-                                    <p id="LiveTime"></p>
-
-                                </div>                                     
-                                <div class="mt-5 pagination">
-                                    <h4>Quiz Navigation</h4>
-                                    <c:forEach items="${QuestionList}" var="x">
-                                        <c:if test="${Question == x}">
-                                            <input type="submit" class="btn btn-primary border border-secondary rounded-pill px-3" name="Btn${QuestionList.indexOf(x)}" value="${QuestionList.indexOf(x) + 1}">
-                                        </c:if>
-                                        <c:if test="${Question != x}">
-                                            <input type="submit" class="btn border border-secondary rounded-pill px-3" name="Btn${QuestionList.indexOf(x)}" value="${QuestionList.indexOf(x) + 1}">
-                                        </c:if>
-                                    </c:forEach>
-                                </div>
-                            </div>                            
-                            <div class="d-flex justify-content-center my-4">
-                                <input type="button" id="BtnFinish" onclick="setFinish()" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100" value="Finish">
-                            </div>                                                                         
-                        </div>
-                    </div>                
+            <div class="col-lg-3 align-items-center">
+                <div class="counter bg-white rounded p-5">      
+                    <img src="img/avatar.jpg" alt="alt" class="img-fluid w-100 rounded-top"/>                    
+                    <div style="margin-top: 20%">
+                        <h4>${User.getFullName()}</h4>
+                        <c:if test="${User.getRole() == 4}">
+                            <p>Number of Courses: ${CourseList.size()}</p>                        
+                        </c:if>
+                    </div>
+                    <table>
+                        <tr>                            
+                            <td><a href="Profile">Profile</a> </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-        </form>   
-        <!-- Single Product End -->      
+
+            <div class="col-lg-7 align-items-center">
+                <div class="counter bg-white rounded p-5">
+                    <form action="ChangePassword" method="post" id="change">
+                        <table>
+                            <tr>
+                                <th>Old Password: </th>
+                                <td><input type="text" name="oldpass" value class="form-control border-2 px-4" required></td>
+                            </tr>
+                            <tr>
+                                <th>New Password: </th>
+                                <td><input type="text" name="newpass" value class="form-control border-2 px-4" id="newpass" required></td>
+                            </tr>                    
+                            <tr>
+                                <th>Confirm: </th>
+                                <td><input type="text" name="confirm" value class="form-control border-2 px-4" id="confirm" required></td>
+                            </tr>                           
+                        </table>
+                        <button name="submit" class="btn btn-primary border-2 border-secondary px-3 rounded-pill text-white" style="margin-top: 20px">Submit</button>                        
+                        <p>${inform}</p>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-1"></div>
+        </div>
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+            <div class="container py-5">
+                <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
+                    <div class="row g-4">
+                        <div class="col-lg-3">
+                            <a href="#">
+                                <h1 class="text-primary mb-0">Fruitables</h1>
+                                <p class="text-secondary mb-0">Fresh products</p>
+                            </a>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="position-relative mx-auto">
+                                <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number" placeholder="Your Email">
+                                <button type="submit" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Subscribe Now</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="d-flex justify-content-end pt-3">
+                                <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-youtube"></i></a>
+                                <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-5">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-item">
+                            <h4 class="text-light mb-3">Why People Like us!</h4>
+                            <p class="mb-4">typesetting, remaining essentially unchanged. It was 
+                                popularised in the 1960s with the like Aldus PageMaker including of Lorem Ipsum.</p>
+                            <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Read More</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="d-flex flex-column text-start footer-item">
+                            <h4 class="text-light mb-3">Shop Info</h4>
+                            <a class="btn-link" href="">About Us</a>
+                            <a class="btn-link" href="">Contact Us</a>
+                            <a class="btn-link" href="">Privacy Policy</a>
+                            <a class="btn-link" href="">Terms & Condition</a>
+                            <a class="btn-link" href="">Return Policy</a>
+                            <a class="btn-link" href="">FAQs & Help</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="d-flex flex-column text-start footer-item">
+                            <h4 class="text-light mb-3">Account</h4>
+                            <a class="btn-link" href="">My Account</a>
+                            <a class="btn-link" href="">Shop details</a>
+                            <a class="btn-link" href="">Shopping Cart</a>
+                            <a class="btn-link" href="">Wishlist</a>
+                            <a class="btn-link" href="">Order History</a>
+                            <a class="btn-link" href="">International Orders</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-item">
+                            <h4 class="text-light mb-3">Contact</h4>
+                            <p>Address: 1429 Netus Rd, NY 48247</p>
+                            <p>Email: Example@gmail.com</p>
+                            <p>Phone: +0123 4567 8910</p>
+                            <p>Payment Accepted</p>
+                            <img src="img/payment.png" class="img-fluid" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
 
         <!-- Copyright Start -->
         <div class="container-fluid copyright bg-dark py-4">
@@ -244,8 +274,7 @@
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
-
+        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>           
 
         <!-- JavaScript Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

@@ -10,103 +10,107 @@
     </filter-mapping>
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>Controller.Login</servlet-class>
+        <servlet-class>Controller.Common.Login</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Quizing</servlet-name>
-        <servlet-class>Controller.Quizing</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Home</servlet-name>
-        <servlet-class>Controller.Home</servlet-class>
+        <servlet-class>Controller.Learning.Quizing</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Summary</servlet-name>
-        <servlet-class>Controller.Summary</servlet-class>
+        <servlet-class>Controller.Learning.Summary</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Review</servlet-name>
-        <servlet-class>Controller.Review</servlet-class>
+        <servlet-class>Controller.Learning.Review</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Logout</servlet-name>
-        <servlet-class>Controller.Logout</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Course</servlet-name>
-        <servlet-class>Controller.Course</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Lesson</servlet-name>
-        <servlet-class>Controller.Lesson</servlet-class>
+        <servlet-class>Controller.Common.Logout</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>QuizNavigate</servlet-name>
-        <servlet-class>Controller.QuizNavigate</servlet-class>
+        <servlet-class>Controller.Learning.QuizNavigate</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CreateSubject</servlet-name>
-        <servlet-class>Controller.CreateSubject</servlet-class>
+        <servlet-class>Controller.Course.CreateSubject</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CreateCategory</servlet-name>
-        <servlet-class>Controller.CreateCategory</servlet-class>
+        <servlet-class>Controller.Course.CreateCategory</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AttributeManage</servlet-name>
-        <servlet-class>Controller.AttributeManage</servlet-class>
+        <servlet-class>Controller.Course.AttributeManage</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ManageCategory</servlet-name>
-        <servlet-class>Controller.ManageCategory</servlet-class>
+        <servlet-class>Controller.Course.ManageCategory</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateCategory</servlet-name>
-        <servlet-class>Controller.UpdateCategory</servlet-class>
+        <servlet-class>Controller.Course.UpdateCategory</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateSubject</servlet-name>
-        <servlet-class>Controller.UpdateSubject</servlet-class>
+        <servlet-class>Controller.Course.UpdateSubject</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ManageSubject</servlet-name>
-        <servlet-class>Controller.ManageSubject</servlet-class>
+        <servlet-class>Controller.Course.ManageSubject</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>QuestionImport</servlet-name>
-        <servlet-class>Controller.QuestionImport</servlet-class>
+        <servlet-class>Controller.TestContent.QuestionImport</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PracticeList</servlet-name>
-        <servlet-class>Controller.PracticeList</servlet-class>
+        <servlet-class>Controller.Learning.PracticeList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ServerRefresh</servlet-name>
-        <servlet-class>Controller.ServerRefresh</servlet-class>
+        <servlet-class>Controller.Server.ServerRefresh</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Register</servlet-name>
-        <servlet-class>Controller.Register</servlet-class>
+        <servlet-class>Controller.Common.Register</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CourseShop</servlet-name>
-        <servlet-class>Controller.CourseShop</servlet-class>
+        <servlet-class>Controller.Public.CourseShop</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CourseDetails</servlet-name>
-        <servlet-class>Controller.CourseDetails</servlet-class>
+        <servlet-class>Controller.Public.CourseDetails</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Cart</servlet-name>
-        <servlet-class>Controller.Cart</servlet-class>
+        <servlet-class>Controller.Public.Cart</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CartContact</servlet-name>
-        <servlet-class>Controller.CartContact</servlet-class>
+        <servlet-class>Controller.Public.CartContact</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CartCompletation</servlet-name>
-        <servlet-class>Controller.CartCompletation</servlet-class>
+        <servlet-class>Controller.Public.CartCompletation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyCourse</servlet-name>
+        <servlet-class>Controller.Learning.MyCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CourseContent</servlet-name>
+        <servlet-class>Controller.Learning.CourseContent</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Profile</servlet-name>
+        <servlet-class>Controller.Common.Profile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangePassword</servlet-name>
+        <servlet-class>Controller.Common.ChangePassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -115,10 +119,6 @@
     <servlet-mapping>
         <servlet-name>Quizing</servlet-name>
         <url-pattern>/Quizing</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Home</servlet-name>
-        <url-pattern>/Home</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Summary</servlet-name>
@@ -131,14 +131,6 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/Logout</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Course</servlet-name>
-        <url-pattern>/Course</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Lesson</servlet-name>
-        <url-pattern>/Lesson</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>QuizNavigate</servlet-name>
@@ -207,5 +199,21 @@
     <servlet-mapping>
         <servlet-name>CartCompletation</servlet-name>
         <url-pattern>/CartCompletation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyCourse</servlet-name>
+        <url-pattern>/MyCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseContent</servlet-name>
+        <url-pattern>/CourseContent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Profile</servlet-name>
+        <url-pattern>/Profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePassword</servlet-name>
+        <url-pattern>/ChangePassword</url-pattern>
     </servlet-mapping>
 </web-app>

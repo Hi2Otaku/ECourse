@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Cart
-    Created on : Jun 20, 2024, 6:20:46 AM
+    Document   : MyCourse
+    Created on : Jun 30, 2024, 2:09:30 AM
     Author     : hi2ot
 --%>
 
@@ -11,7 +11,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Cart</title>
+        <title>Profile</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -35,18 +35,29 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
-
         <script>
-            function deleteCourse(x) {
-                document.getElementById("CourseID").value = x;
-                document.getElementById("mainform").submit();
+            function change(x) {
+                document.getElementById("status").value = x;
+                document.getElementById("mycourse").submit();
             }
-
-            function goContact() {
-                document.getElementById("goContact").submit();
-            }
-
         </script>
+
+        <style>
+            th, td {
+                padding: 10px
+            }
+
+            td {
+                width: 500px
+            }
+
+            .ScrollStyle
+            {
+                max-height: 500px;
+                overflow-y: scroll;
+            }
+        </style>
+
     </head>
 
     <body>
@@ -55,8 +66,7 @@
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
         </div>
-        <!-- Spinner End -->
-
+        <!-- Spinner End -->               
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
@@ -83,8 +93,8 @@
                         <div class="navbar-nav mx-auto">
                             <a href="Home" class="nav-item nav-link">Home</a>
                             <a href="CourseShop" class="nav-item nav-link">Shop</a>
-                            <a href="MyCourse" class="nav-item nav-link">My Courses</a>                                                            
-                            <a href="Cart" class="nav-item nav-link active">Cart</a>                                                                                                            
+                            <a href="MyCourse" class="nav-item nav-link active">My Courses</a>                                                            
+                            <a href="Cart" class="nav-item nav-link">Cart</a>                                                                                                            
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
@@ -125,82 +135,65 @@
 
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">Cart</h1>
+            <h1 class="text-center text-white display-6">My Courses</h1>
             <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                <li class="breadcrumb-item active text-white">Cart</li>
+                <li class="breadcrumb-item"><a href="Home">Home</a></li>                
+                <li class="breadcrumb-item active text-white">My Courses</li>
             </ol>
-        </div>
-        <!-- Single Page Header End -->
+        </div>                
+        <!-- Single Page Header End -->     
 
 
-        <!-- Cart Page Start -->        
-        <div class="container-fluid py-5">
-            <div class="container py-5">
-                <div class="table-responsive">
-                    <form action="Cart" method="post" id="mainform">
-                        <input type="text" name="CourseID" value="" id="CourseID" hidden>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th scope="col">Course</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Price</th>                                                        
-                                    <th scope="col">Handle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${CourseList}" var="cl">
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="d-flex align-items-center">
-                                                <img src="img/lesson.jpg" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
-                                            </div>
-                                        </th>                                                                                
-                                        <td>
-                                            <p class="mb-0 mt-4">${cl.getCourseName()}</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 mt-4">${cl.getDescription()}</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 mt-4">${cl.getPrice()} $</p>                                                           
-                                        </td>                            
-                                        <td>
-                                            <button class="btn btn-md rounded-circle bg-light border mt-4" name="CourseID" value="${cl.getCourseID()}" id="Del" onclick="deleteCourse(${cl.getCourseID()})">
-                                                <i class="fa fa-times text-danger"></i>
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </form>
-                </div>                
-                <form action="CartContact" method="post" id="goContact">
-                    <div class="row g-4 justify-content-end">
-                        <div class="col-8"></div>
-                        <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                            <div class="bg-light rounded">
-                                <div class="p-4">
-                                    <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>                                                         
-                                </div>
-                                <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                    <h5 class="mb-0 ps-4 me-4">Total</h5>
-                                    <p class="mb-0 pe-4">${total} $</p>
-                                </div>
-                                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button" onclick="goContact()">Proceed Checkout</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+        <div class="container-fluid py-5 row">
+            <div class="col-lg-1">                
             </div>
-        </div>
-        <!-- Cart Page End -->
 
+            <div class="col-lg-3 align-items-center">
+                <div class="counter bg-white rounded p-5">      
+                    <h4 style="color: grey">Status</h4>
+                    <form action="MyCourse" method="get" id="mycourse">
+                        <input type="text" name="status" value="${status}" id="status" hidden>
+                        <c:if test="${status == 0}">
+                            <button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 0px" onclick="change(0)">In Progress</button>
+                        </c:if>
+                        <c:if test="${status != 0}">
+                            <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px" onclick="change(0)">In Progress</button>
+                        </c:if>
+                        <br/>
+                        <c:if test="${status != 0}">
+                            <button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 0px" onclick="change(1)">Completed</button>
+                        </c:if>
+                        <c:if test="${status == 0}">
+                            <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px" onclick="change(1)">Completed</button>
+                        </c:if>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="counter bg-white rounded p-5 row">
+                    <c:forEach items="${CourseList}" var="x">                                            
+                        <div class="col-md-6 col-lg-6 col-xl-4">
+                            <div class="rounded position-relative fruite-item">
+                                <div class="fruite-img">
+                                    <img src="img/lesson.png" class="img-fluid w-100 rounded-top" alt="">
+                                </div>                                            
+                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                    <h4>${x.getCourseName()}</h4>
+                                    <p>${x.getDescription()}</p>
+                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                        <p style="margin-top: 10px">Progress: ${UserINS.getCourseProgress(User.getUserID(), x.getCourseID())}%</p>
+                                        <a href="CourseContent?CourseID=${x.getCourseID()}"><button class="btn border border-secondary rounded-pill px-3 text-primary">Go to Course</button></a>     
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                                            
+                    </c:forEach>  
+                </div>
+            </div>
+
+            <div class="col-lg-1"></div>
+        </div>       
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -296,8 +289,7 @@
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
-
+        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>           
 
         <!-- JavaScript Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -312,3 +304,4 @@
     </body>
 
 </html>
+

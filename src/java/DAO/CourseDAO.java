@@ -362,8 +362,53 @@ public class CourseDAO {
         return courseFeedback;
     }
     
-    public static void main (String[] agrs) {                 
-        List<Feedback> fb = INS.getCourseFeedback(1);
+    public ArrayList<Course> getRelatedCourse(int CourseID) {
+        List<Category> CategoryList = INS.loadCategoryList();                
+        List<Subject> SubjectList = INS.loadSubjectList();
+        
+        List<Category> checkedCategory = new ArrayList<>();
+        List<Subject> checkedSubject = new ArrayList<>();
+        
+        String sql = "Select * From [CourseCategory] Where CourseID = ?";        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int categoryID = rs.getInt("CategoryID");
+                for (Category cat : CategoryList) {
+                    if (categoryID == cat.getCategoryID()) {
+                        checkedCategory.add(cat);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            status = "Error at getRelatedCourse " + e.getMessage();
+        }
+        
+        sql = "Select * From [SubjectCategory] Where CourseID = ?";        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int subjectID = rs.getInt("SubjectID");
+                for (Subject suj : SubjectList) {
+                    if (subjectID == suj.getSubjectID()) {
+                        checkedSubject.add(suj);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            status = "Error at getRelatedCourse " + e.getMessage();
+        }
+        
+        return INS.getCourseList(checkedCategory, checkedSubject);
+    }
+    
+    public static void main(String[] agrs) {                 
+        List<Course> c = INS.getRelatedCourse(4);
+        System.out.println(c.size());
         System.out.println(INS.status);
     }
     

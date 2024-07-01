@@ -43,6 +43,10 @@
                 document.getElementById("buyId").value = courseID;
                 submitShop();
             }
+            function movePage(x) {
+                document.getElementById("btn").value = x;
+                submitShop();
+            }
         </script>
     </head>
 
@@ -78,26 +82,18 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="shop.html" class="nav-item nav-link active">Shop</a>
-                            <a href="shop-detail.html" class="nav-item nav-link">My Courses</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.html" class="dropdown-item">Cart</a>
-                                    <a href="chackout.html" class="dropdown-item">Checkout</a>                                    
-                                    <a href="404.html" class="dropdown-item">404 Page</a>
-                                </div>
-                            </div>
+                            <a href="Home" class="nav-item nav-link">Home</a>
+                            <a href="CourseShop" class="nav-item nav-link active">Shop</a>
+                            <a href="MyCourse" class="nav-item nav-link">My Courses</a>                                                            
+                            <a href="Cart" class="nav-item nav-link">Cart</a>                                                                                                            
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <a href="Cart" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x"></i>                                
                             </a>
-                            <a href="#" class="my-auto">
+                            <a href="Profile" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                         </div>
@@ -136,7 +132,7 @@
                 <li class="breadcrumb-item"><a href="#">Pages</a></li>
                 <li class="breadcrumb-item active text-white">Shop</li>
             </ol>
-        </div>
+        </div>                
         <!-- Single Page Header End -->
 
 
@@ -145,32 +141,22 @@
             <input type="text" name="buyId" value id="buyId" hidden>
             <div class="container-fluid fruite py-5">
                 <div class="container py-5">
-                    <h1 class="mb-4">Fresh fruits shop</h1>
+                    <h1 class="mb-4">Courses shop</h1>
                     <div class="row g-4">
                         <div class="col-lg-12">
                             <div class="row g-4">
                                 <div class="col-xl-3">
-                                    <div class="input-group w-100 mx-auto d-flex">
-                                        <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                                        <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                                    </div>
+                                    <!--                                    <div class="input-group w-100 mx-auto d-flex">
+                                                                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                                                                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                                                                        </div>-->
                                 </div>
-                                <div class="col-6"></div>
-                                <div class="col-xl-3">
-                                    <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                        <label for="fruits">Default Sorting:</label>
-                                        <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
-                                            <option value="volvo">Nothing</option>
-                                            <option value="saab">Popularity</option>
-                                            <option value="opel">Organic</option>
-                                            <option value="audi">Fantastic</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                <div class="col-6"></div>                                
                             </div>
                             <div class="row g-4">
                                 <div class="col-lg-3">
                                     <div class="row g-4">
+                                        
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <h4>Categories</h4>                                            
@@ -182,14 +168,8 @@
                                                     </div>                                                                                                
                                                 </c:forEach>                                            
                                             </div>
-                                        </div>
-                                        <!--                                        <div class="col-lg-12">
-                                                                                    <div class="mb-3">
-                                                                                        <h4 class="mb-2">Price</h4>
-                                                                                        <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="500" value="0" oninput="amount.value=rangeInput.value">
-                                                                                        <output id="amount" name="amount" min-value="0" max-value="500" for="rangeInput"></output>
-                                                                                    </div>  
-                                                                                </div>-->
+                                        </div>           
+                                        
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <h4>Subjects</h4>
@@ -202,70 +182,58 @@
                                                 </c:forEach>                                            
                                             </div>
                                         </div>
+                                        
                                         <div class="col-lg-12 align-items-center">
                                             <input type="submit" name="submit" value="Search" class="btn btn-primary border-2 border-secondary rounded-pill text-white px-2"/>
-                                        </div>
-                                        <!--                                        <div class="col-lg-12">
-                                                                                    <h4 class="mb-3">Featured products</h4>
-                                                                                    <div class="d-flex align-items-center justify-content-start">
-                                                                                        <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                                                            <img src="img/featur-1.jpg" class="img-fluid rounded" alt="">
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <h6 class="mb-2">Big Banana</h6>
-                                                                                            <div class="d-flex mb-2">
-                                                                                                <i class="fa fa-star text-secondary"></i>
-                                                                                                <i class="fa fa-star text-secondary"></i>
-                                                                                                <i class="fa fa-star text-secondary"></i>
-                                                                                                <i class="fa fa-star text-secondary"></i>
-                                                                                                <i class="fa fa-star"></i>
-                                                                                            </div>
-                                                                                            <div class="d-flex mb-2">
-                                                                                                <h5 class="fw-bold me-2">2.99 $</h5>
-                                                                                                <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>                                        
-                                                                                </div>                                   -->
+                                        </div>                                                                                   
                                     </div>
                                 </div>
+                                
                                 <div class="col-lg-9">
-                                    <div class="row g-4">
-                                        <c:forEach items="${CourseList}" var="x">
-                                            <c:if test="${UserINS.checkOwnCourse(User.getUserID(), x.getCourseID()) == 0}">
-                                                <div class="col-md-6 col-lg-6 col-xl-4">
-                                                    <div class="rounded position-relative fruite-item">
-                                                        <div class="fruite-img">
-                                                            <a href="CourseDetails?detailId=${x.getCourseID()}"><img src="img/lesson.jpg" class="img-fluid w-100 rounded-top" alt=""></a>
-                                                        </div>                                            
-                                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                            <h4>${x.getCourseName()}</h4>
-                                                            <p>${x.getDescription()}</p>
-                                                            <div class="d-flex justify-content-between flex-lg-wrap">
-                                                                <p class="text-dark fs-5 fw-bold mb-0">$ ${x.getPrice()}</p>
-                                                                <c:if test="${UserINS.checkIfCourseinCart(User.getUserID(), x.getCourseID()) == 0}">
+                                    <div class="row g-4">                                       
+                                        <c:forEach items="${CourseList}" var="x" begin="${paging.getBegin()}" end="${paging.getEnd() - 1}">                                                  
+                                            <div class="col-md-6 col-lg-6 col-xl-4">
+                                                <div class="rounded position-relative fruite-item">
+                                                    <div class="fruite-img">
+                                                        <a href="CourseDetails?detailId=${x.getCourseID()}"><img src="img/lesson.png" class="img-fluid w-100 rounded-top" alt=""></a>
+                                                    </div>                                            
+                                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                        <h4>${x.getCourseName()}</h4>
+                                                        <p>${x.getDescription()}</p>
+                                                        <div class="d-flex justify-content-between flex-lg-wrap">
+                                                            <p class="text-dark fs-5 fw-bold mb-0">$ ${x.getPrice()}</p>
+                                                            <c:if test="${UserINS.checkIfCourseinCart(User.getUserID(), x.getCourseID()) == 0}">
+                                                                <c:if test="${UserINS.checkOwnCourse(User.getUserID(), x.getCourseID()) == 0}">
                                                                     <button class="btn border border-secondary rounded-pill px-3 text-primary" onclick="addCart(${x.getCourseID()})"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
-                                                                </c:if>                                                
-                                                            </div>
+                                                                </c:if>
+                                                            </c:if>                                                
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </c:if>
-                                        </c:forEach>                                    
+                                            </div>                                            
+                                        </c:forEach>                                        
                                         <div class="col-12">
-                                            <div class="pagination d-flex justify-content-center mt-5">
-                                                <a href="#" class="rounded">&laquo;</a>
-                                                <a href="#" class="active rounded">1</a>
-                                                <a href="#" class="rounded">2</a>
-                                                <a href="#" class="rounded">3</a>
-                                                <a href="#" class="rounded">4</a>
-                                                <a href="#" class="rounded">5</a>
-                                                <a href="#" class="rounded">6</a>
-                                                <a href="#" class="rounded">&raquo;</a>
+                                            <div class="d-flex justify-content-center mt-5">
+                                                <input type="text" name="index" value="${paging.getIndex()}" hidden>
+                                                <input type="text" name="total" value="${paging.getTotalPage()}" hidden>
+                                                <input type="text" name="btn" id="btn" value hidden>
+                                                <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnHome" value=&Ll;>                                                
+                                                <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnPre" value=&laquo;>
+                                                <c:forEach var="x" begin="${paging.getPageStart()}" end="${paging.getPageEnd()}">
+                                                    <c:if test="${paging.getIndex() == x}">
+                                                        <button class="btn border-2 border-secondary rounded" style="margin: 0px 5px;background: greenyellow" onclick="movePage(${x})">${x + 1}</button>
+                                                    </c:if>
+                                                    <c:if test="${paging.getIndex() != x}">
+                                                        <button class="btn border-2 border-secondary rounded" style="margin: 0px 5px" onclick="movePage(${x})">${x + 1}</button>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnNext" value=&raquo;>
+                                                <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnEnd" value=&Gg;>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                                
                             </div>
                         </div>
                     </div>
