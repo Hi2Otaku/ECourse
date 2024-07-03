@@ -11,7 +11,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Profile</title>
+        <title>Course Manage</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -162,17 +162,17 @@
             </div>
 
             <div class="col-lg-9 align-items-center">
-                <div class="counter bg-white rounded p-5">
+                <div class="counter bg-white rounded p-5">                    
                     <table style="width: 100%">
                         <thead>
                         <th>Course ID</th>
                         <th>Course Name</th>
                         <th>Subjects</th>
                         <th>Categories</th>
-                        <th>Price</th>
-                        <th>Discount</th>
+                        <th>Price</th>                        
                         <th>NoP</th>
                         <th>Edit</th>
+                        <th>Edit Content</th>
                         </thead>
                         <tbody>
                             <c:forEach items="${CourseList}" var="x">
@@ -201,14 +201,15 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td> ${x.getPrice()}$</td>
-                                    <td> ${CourseINS.getCourseDiscount(x.getCourseID())}% </td>
-                                    <td></td>
-                                    <td> <a href="EditCourse?CourseID=?">Edit</a> </td>
+                                    <td> ${x.getPrice()}$</td>                                    
+                                    <td> ${CourseINS.getNoP(x.getCourseID())}</td>
+                                    <td> <a href="EditCourse?CourseID=${x.getCourseID()}">Edit</a> </td>
+                                    <td> <a href="EditContent?CourseID=${x.getCourseID()}">Edit Content</a> </td>
                                 </tr>
                             </c:forEach>
                         </tbody>                        
                     </table>
+                    <a href="CreateCourse" class="btn btn-primary text-white border border-secondary" style="margin: 20px">+ New Course</a>
                 </div>
             </div>
 

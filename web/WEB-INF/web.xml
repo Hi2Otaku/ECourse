@@ -92,6 +92,18 @@
         <servlet-name>CourseManage</servlet-name>
         <servlet-class>Controller.Course.CourseManage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditCourse</servlet-name>
+        <servlet-class>Controller.Course.EditCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCourse</servlet-name>
+        <servlet-class>Controller.Course.CreateCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditContent</servlet-name>
+        <servlet-class>Controller.Course.EditContent</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -175,5 +187,17 @@
     <servlet-mapping>
         <servlet-name>CourseManage</servlet-name>
         <url-pattern>/CourseManage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCourse</servlet-name>
+        <url-pattern>/EditCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCourse</servlet-name>
+        <url-pattern>/CreateCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditContent</servlet-name>
+        <url-pattern>/EditContent</url-pattern>
     </servlet-mapping>
 </web-app>

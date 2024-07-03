@@ -1,6 +1,6 @@
 <%-- 
-    Document   : CourseShop
-    Created on : Jun 27, 2024, 2:25:58 PM
+    Document   : EditContent
+    Created on : Jul 4, 2024, 4:13:44 AM
     Author     : hi2ot
 --%>
 
@@ -11,7 +11,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Profile</title>
+        <title>Edit: ${curCourse.getCourseName()}</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -41,6 +41,10 @@
         <style>
             th, td {
                 padding: 10px
+            }
+
+            th {
+
             }
 
             td {
@@ -139,87 +143,49 @@
         </div>                
         <!-- Single Page Header End -->     
 
-        <div class="container-fluid py-5 row">
-            <div class="col-lg-1">                
-            </div>
+        <div class="container-fluid py-5 row">            
 
             <div class="col-lg-3 align-items-center">
-                <div class="counter bg-white rounded p-5">      
-                    <img src="img/avatar.jpg" alt="alt" class="img-fluid w-100 rounded-top"/>                    
-                    <div style="margin-top: 20%">
-                        <h4>${User.getFullName()}</h4>
-                        <c:if test="${User.getRole() == 4}">
-                            <p>Number of Courses: ${CourseList.size()}</p>                        
-                        </c:if>
-                    </div>
-                        <table>
-                            <tr>                                
-                                <td><a href="ChangePassword">Change Password</a> </td>
-                            </tr>
-                            
-                            <tr>
-                                <td><a href="Logout" class="btn btn-primary border-2 border-secondary text-white">Logout</a></td>
-                            </tr>
-                        </table>
+                <div class="counter bg-white rounded p-5">              
+                    <h3 style="color: grey">Feature:</h3>
+                    <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px">Categories Manage</button>
+                    <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px">Subjects Manage</button>
+                    <button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 0px">Courses Manage</button>
+                    <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px">Users Manage</button>
                 </div>
             </div>
 
-            <div class="col-lg-7 align-items-center">
-                <div class="counter bg-white rounded p-5">
-                    <form action="Profile" method="post">
-                        <table>
-                            <tr>
-                                <th>Username: </th>
-                                <td><input type="text" name="UserName" value="${User.getUserName()}" class="form-control border-2 px-4" disabled></td>
-                            </tr>
-                            <tr>
-                                <th>Fullname: </th>
-                                <td><input type="text" name="FullName" value="${User.getFullName()}" class="form-control border-2 px-4" required></td>
-                            </tr>                    
-                            <tr>
-                                <th>Mail: </th>
-                                <td><input type="text" name="Mail" value="${User.getMail()}" class="form-control border-2 px-4" disabled></td>
-                            </tr>
-                            <tr>
-                                <th>Date of Birth: </th>
-                                <td><input type="date" name="dob" value="${User.getDoB()}" id="dob" class="form-control border-2 px-4" max="${maxDate}" required></td>
-                            </tr>
-                            <tr>
-                                <th>Security Question: </th>
-                                <td><select name="SQ" class="form-control border-2 px-4 bg-white">
-                                        <c:forEach items="${SEQuestionList}" var="x">
-                                            <option value="${x.getSecutiryQuestionID()}"
-                                                    <c:if test="${x.getSecutiryQuestionID() == User.getSecurityQuestionID()}">
-                                                        selected
-                                                    </c:if>>${x.getQuestion()}</option>
-                                        </c:forEach>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <th>Answer: </th>
-                                <td><input type="text" name="Answer" value="${User.getAnswer()}" class="form-control border-2 px-4" required></td>
-                            </tr>
-                            <tr>
-                                <th>Role: </th>
-                                <td><c:if test="${User.getRole() == 1}">
-                                        <input type="text" name="Role" value="Admin" class="form-control border-2 px-4" disabled>
-                                    </c:if>
-                                    <c:if test="${User.getRole() == 2}">
-                                        <input type="text" name="Role" value="Expert" class="form-control border-2 px-4" disabled>
-                                    </c:if>
-                                    <c:if test="${User.getRole() == 4}">
-                                        <input type="text" name="Role" value="Learner" class="form-control border-2 px-4" disabled>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </table>
-                        <input type="submit" name="update" value="Update Profile" class="btn btn-primary border-2 border-secondary px-3 rounded-pill text-white" style="margin-top: 20px">
-                        <p>${inform}</p>
-                    </form>
+            <div class="col-lg-9 align-items-center">
+                <div class="counter bg-white rounded p-5">                    
+                    <c:forEach items="${LessonINS.loadLessonByCourseID(curCourse.getCourseID())}" var="x">
+
+                        <div class="text-start">
+                            <h3 style="color: grey">${x.getLessonName()}</h3>
+                            <a href="CreateDoc?CourseID=${curCourse.getCourseID()}&LessonID=${x.getLessonID()}" class="btn border border-secondary">+ New Document</a>
+                            <a href="CreateQuiz?CourseID=${curCourse.getCourseID()}&LessonID=${x.getLessonID()}" class="btn border border-secondary">+ New Quiz</a>
+                            <table>                                
+                                <c:forEach items="${LessonINS.loadLessonDoc(curCourse.getCourseID(), x.getLessonID())}" var="y">                                        
+                                    <tr>                                        
+                                        <th><img src="img/doc.png" alt="alt" width="30px" height="30px"></th>
+                                        <td><a href="dwnlib/doc1.pdf" onclick="updateDoc(${y.getDocID()}, ${x.getLessonID()})" download> ${y.getTitle()} </a></td>     
+                                        <td class="text-md-end"><a href="EditDoc?CourseID${curCourse.getCourseID()}&LessonID=${x.getLessonID()}&DocID=${y.getDocID()}">Edit</a></td>
+                                    </tr>                                    
+                                </c:forEach>                                 
+                                <c:forEach items="${QuizINS.loadQuizByLesson(curCourse.getCourseID(), x.getLessonID())}" var="y">
+                                    <tr>
+                                        <th><img src="img/quiz.png" alt="alt" width="30px" height="30px"></th>       
+                                        <td>${y.getQuizName()}</td>
+                                        <td class="text-md-end"><a href="EditQuiz?CourseID${curCourse.getCourseID()}&LessonID=${x.getLessonID()}&DocID=${y.getQuizID()}">Edit</a></td>
+                                    </tr>
+                                </c:forEach>
+                            </table>                            
+                            <hr/>
+                        </div>
+                    </c:forEach>
+                    <a href="CreateLesson?CourseID=${curCourse.getCourseID()}" class="btn btn-primary border border-secondary text-white">+ New Lesson</a>
                 </div>
             </div>
 
-            <div class="col-lg-1"></div>
         </div>
 
         <!-- Footer Start -->

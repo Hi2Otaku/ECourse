@@ -10,6 +10,7 @@ import java.util.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 /**
  *
  * @author hi2ot
@@ -20,22 +21,22 @@ public class CourseDAO {
     private Connection con;
     private String status = "OK";
     public static CourseDAO INS = new CourseDAO();
-
+    
     public List<Course> getCl() {
         return cl;
     }
-
+    
     public void setCl(List<Course> cl) {
         this.cl = cl;
     }
-
+    
     public String getStatus() {
         return status;
     }
-
+    
     public void setStatus(String status) {
         this.status = status;
-    }       
+    }
     
     private CourseDAO() {
         if (INS == null) {
@@ -67,7 +68,7 @@ public class CourseDAO {
         } catch (Exception e) {
             status = "Error at load Course " + e.getMessage();
         }
-    }        
+    }
     
     public void addSubject(int SubjectID, String SubjectName) {
         String sql = "Insert Into [Subject] Values (?,?)";
@@ -97,7 +98,7 @@ public class CourseDAO {
         String sql = "Select * From [Subject]";
         Vector<Subject> SubjectList = new Vector<Subject>();
         try {
-            PreparedStatement ps = con.prepareStatement(sql);            
+            PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int SubjectID = rs.getInt("SubjectID");
@@ -114,7 +115,7 @@ public class CourseDAO {
         String sql = "Select * From [Category]";
         ArrayList<Category> CategoryList = new ArrayList<>();
         try {
-            PreparedStatement ps = con.prepareStatement(sql);            
+            PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int CategoryID = rs.getInt("CategoryID");
@@ -146,7 +147,7 @@ public class CourseDAO {
         }
     }
     
-    public void updateCategory(int CategoryID, String CategoryName) {                
+    public void updateCategory(int CategoryID, String CategoryName) {
         String sql = "Update [Category]"
                 + "\n Set CategoryName = ?"
                 + "\n Where CategoryID = ?";
@@ -157,7 +158,7 @@ public class CourseDAO {
             ps.execute();
         } catch (Exception e) {
             status = "Error at updateCategory " + e.getMessage();
-        }        
+        }
         
     }
     
@@ -180,7 +181,7 @@ public class CourseDAO {
         }
     }
     
-    public void updateSubject(int SubjectID, String SubjectName) {                
+    public void updateSubject(int SubjectID, String SubjectName) {
         String sql = "Update [Subject]"
                 + "\n Set SubjectName = ?"
                 + "\n Where SubjectID = ?";
@@ -191,7 +192,7 @@ public class CourseDAO {
             ps.execute();
         } catch (Exception e) {
             status = "Error at updateSubject " + e.getMessage();
-        }        
+        }
         
     }
     
@@ -258,8 +259,7 @@ public class CourseDAO {
             if (firstInsert == 1) {
                 firstInsert = 0;
                 sql = sql.concat("\n Where cc.CategoryID = ?");
-            }
-            else {
+            } else {
                 sql = sql.concat(" Or cc.CategoryID = ?");
             }
         }
@@ -267,15 +267,14 @@ public class CourseDAO {
         for (Subject suj : checkedSubject) {
             if (firstInsert == 1) {
                 firstInsert = 0;
-                sql = sql.concat("\n Where cs.SubjectID = ?");                
-            }
-            else {
+                sql = sql.concat("\n Where cs.SubjectID = ?");
+            } else {
                 sql = sql.concat(" Or cs.SubjectID = ?");
             }
         }
         ArrayList<Course> CourseList = new ArrayList<>();
         try {
-            PreparedStatement ps = con.prepareStatement(sql);         
+            PreparedStatement ps = con.prepareStatement(sql);
             int cnt = 0;
             for (Category cat : checkedCategory) {
                 ++cnt;
@@ -309,7 +308,7 @@ public class CourseDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, CourseID);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 String CourseName = rs.getString("CourseName");
                 float Price = rs.getFloat("Price");
                 String Description = rs.getString("Description");
@@ -321,7 +320,7 @@ public class CourseDAO {
             status = "Error at getCourseByID " + e.getMessage();
         }
         return null;
-    }        
+    }
     
     public String getCourseCategory(int CourseID) {
         String sql = "Select c.* From [CourseCategory] cc"
@@ -332,13 +331,13 @@ public class CourseDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, CourseID);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                                
+            while (rs.next()) {
                 String CategoryName = rs.getString("CategoryName");
                 courseCategory = courseCategory.concat(CategoryName + ", ");
             }
         } catch (SQLException e) {
             status = "Error at getCourseCategory " + e.getMessage();
-        }        
+        }
         return courseCategory;
     }
     
@@ -346,7 +345,7 @@ public class CourseDAO {
         String sql = "Select * From [Feedback] Where CourseID = ?";
         ArrayList<Feedback> courseFeedback = new ArrayList<>();
         try {
-            PreparedStatement ps = con.prepareStatement(sql);            
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, CourseID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -363,13 +362,13 @@ public class CourseDAO {
     }
     
     public ArrayList<Course> getRelatedCourse(int CourseID) {
-        List<Category> CategoryList = INS.loadCategoryList();                
+        List<Category> CategoryList = INS.loadCategoryList();
         List<Subject> SubjectList = INS.loadSubjectList();
         
         List<Category> checkedCategory = new ArrayList<>();
         List<Subject> checkedSubject = new ArrayList<>();
         
-        String sql = "Select * From [CourseCategory] Where CourseID = ?";        
+        String sql = "Select * From [CourseCategory] Where CourseID = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, CourseID);
@@ -386,7 +385,7 @@ public class CourseDAO {
             status = "Error at getRelatedCourse " + e.getMessage();
         }
         
-        sql = "Select * From [SubjectCategory] Where CourseID = ?";        
+        sql = "Select * From [SubjectCategory] Where CourseID = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, CourseID);
@@ -461,8 +460,189 @@ public class CourseDAO {
         return 0;
     }
     
-    public static void main(String[] agrs) {                 
-        INS.getSubjectByCourse(1);
+    public int getNoP(int CourseID) {
+        String sql = "Select Count(UserID) as NoP From [OwnCourse] Where CourseID = ?";
+        int NoP = 0;
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                NoP = rs.getInt("NoP");
+            }
+        } catch (SQLException e) {
+            status = "Error at getNoP " + e.getMessage();
+        }
+        return NoP;
+    }
+    
+    public int checkCourseCategory(int CourseID, int CategoryID) {
+        String sql = "Select * From [CourseCategory] Where CourseID = ? And CategoryID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ps.setInt(2, CategoryID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return 1;
+            }
+        } catch (SQLException e) {
+            status = "Error at checkCourseCategory " + e.getMessage();
+        }
+        return 0;
+    }
+    
+    public int checkCourseSubject(int CourseID, int SubjectID) {
+        String sql = "Select * From [CourseSubject] Where CourseID = ? And SubjectID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ps.setInt(2, SubjectID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return 1;
+            }
+        } catch (SQLException e) {
+            status = "Error at checkCourseSubject " + e.getMessage();
+        }
+        return 0;
+    }
+    
+    public void updateCourse(int CourseID, String CourseName, String Description, float Price, float Percentage, List<Category> CategoryList, List<Subject> SubjectList) {
+        String sql = "Update [Course]"
+                + "\n Set CourseName = ?, Description = ?, Price = ?"
+                + "\n Where CourseID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, CourseName);
+            ps.setString(2, Description);
+            ps.setFloat(3, Price);
+            ps.setInt(4, CourseID);
+            ps.execute();
+        } catch (SQLException e) {
+            status = "Error at updateCourse " + e.getMessage();
+        }       
+        
+        sql = "Delete From [CourseCategory] Where CourseID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ps.execute();
+        } catch (SQLException e) {
+            status = "Error at updateCourse " + e.getMessage();
+        }
+        
+        sql = "Delete From [CourseSubject] Where CourseID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ps.execute();
+        } catch (SQLException e) {
+            status = "Error at updateCourse " + e.getMessage();
+        }
+        
+        sql = "Insert Into [CourseCategory] Values(?, ?)";
+        for (Category cat : CategoryList) {            
+            try {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, CourseID);
+                ps.setInt(2, cat.getCategoryID());
+                ps.execute();
+            } catch (SQLException e) {
+                status = "Error at updateCourse " + e.getMessage();
+            }
+        }
+        
+        sql = "Insert Into [CourseSubject] Values(?, ?)";
+        for (Subject sub : SubjectList) {            
+            try {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, CourseID);
+                ps.setInt(2, sub.getSubjectID());
+                ps.execute();
+            } catch (SQLException e) {
+                status = "Error at updateCourse " + e.getMessage();
+            }            
+        }
+    }
+    
+    public Category getCategoryById(int CategoryID) {
+        String sql = "Select * From [Category] Where CategoryID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CategoryID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return new Category(CategoryID, rs.getString("CategoryName"));
+            }
+        } catch (SQLException e) {
+            status = "Error at getCategoryById " + e.getMessage();
+        }
+        return null;
+    }
+    
+    public Subject getSubjectById(int SubjectID) {
+        String sql = "Select * From [Subject] Where SubjectID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, SubjectID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return new Subject(SubjectID, rs.getString("SubjectName"));
+            }
+        } catch (SQLException e) {
+            status = "Error at getSubjectById " + e.getMessage();
+        }
+        return null;
+    }
+    
+    public void createNewCourse(String CourseName, String Description, float Price, float Percentage, List<Category> CategoryList, List<Subject> SubjectList, int UserID) {
+        INS.loadCourse();
+        int CourseID = INS.cl.size() + 1;
+        String sql = "Insert Into [Course] Values(?,?,?,?,?,?)";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CourseID);
+            ps.setString(2, CourseName);
+            ps.setFloat(3, Price);
+            ps.setString(4, Description);            
+            java.util.Date date = new java.util.Date();
+            ps.setDate(5, new java.sql.Date(date.getTime()));
+            ps.setInt(6, UserID);
+            ps.execute();
+            
+        } catch (SQLException e) {
+            status = "Error at createNewCourse " + e.getMessage();
+        }
+        
+        sql = "Insert Into [CourseCategory] Values (?,?)";
+        try {
+            for (Category cat : CategoryList) {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, CourseID);
+                ps.setInt(2, cat.getCategoryID());
+                ps.execute();
+            }            
+            
+        } catch (SQLException e) {
+            status = "Error at createNewCourse " + e.getMessage();
+        }
+        
+        sql = "Insert Into [CourseSubject] Values (?,?)";
+        try {
+            for (Subject sub : SubjectList) {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, CourseID);
+                ps.setInt(2, sub.getSubjectID());
+                ps.execute();
+            }
+        } catch (SQLException e) {
+            status = "Error at createNewCourse " + e.getMessage();
+        }
+    }
+    
+    public static void main(String[] agrs) {
+        System.out.println(INS.getCourseList(new ArrayList<>(), new ArrayList<>()).size());           
         System.out.println(INS.status);
     }
     

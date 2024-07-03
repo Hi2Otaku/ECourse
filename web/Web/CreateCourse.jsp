@@ -1,6 +1,6 @@
 <%-- 
-    Document   : CourseShop
-    Created on : Jun 27, 2024, 2:25:58 PM
+    Document   : CreateCourse
+    Created on : Jul 3, 2024, 9:18:34 PM
     Author     : hi2ot
 --%>
 
@@ -44,7 +44,13 @@
             }
 
             td {
-                width: 500px
+                width: 600px
+            }
+
+            tr {
+                border-bottom: 1px solid orange;
+                border-collapse: collapse;
+
             }
         </style>
 
@@ -139,87 +145,67 @@
         </div>                
         <!-- Single Page Header End -->     
 
-        <div class="container-fluid py-5 row">
-            <div class="col-lg-1">                
-            </div>
+        <div class="container-fluid py-5 row">            
 
             <div class="col-lg-3 align-items-center">
-                <div class="counter bg-white rounded p-5">      
-                    <img src="img/avatar.jpg" alt="alt" class="img-fluid w-100 rounded-top"/>                    
-                    <div style="margin-top: 20%">
-                        <h4>${User.getFullName()}</h4>
-                        <c:if test="${User.getRole() == 4}">
-                            <p>Number of Courses: ${CourseList.size()}</p>                        
-                        </c:if>
-                    </div>
-                        <table>
-                            <tr>                                
-                                <td><a href="ChangePassword">Change Password</a> </td>
-                            </tr>
-                            
-                            <tr>
-                                <td><a href="Logout" class="btn btn-primary border-2 border-secondary text-white">Logout</a></td>
-                            </tr>
-                        </table>
+                <div class="counter bg-white rounded p-5">              
+                    <h3 style="color: grey">Feature:</h3>
+                    <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px">Categories Manage</button>
+                    <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px">Subjects Manage</button>
+                    <button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 0px">Courses Manage</button>
+                    <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px">Users Manage</button>
                 </div>
             </div>
 
-            <div class="col-lg-7 align-items-center">
+            <div class="col-lg-9 align-items-center">
                 <div class="counter bg-white rounded p-5">
-                    <form action="Profile" method="post">
-                        <table>
+                    <form action="CreateCourse" method="post">
+                        <table style="width: 100%">
                             <tr>
-                                <th>Username: </th>
-                                <td><input type="text" name="UserName" value="${User.getUserName()}" class="form-control border-2 px-4" disabled></td>
+                                <th>Course ID: </th>
+                                <td> <input type="text" name="CourseID" value class="form-control border-2 px-4" readonly="true"> </td>
+                            </tr>          
+                            <tr>
+                                <th>Course Name: </th>
+                                <td> <input type="text" name="CourseName" value class="form-control border-2 px-4"> </td>
                             </tr>
                             <tr>
-                                <th>Fullname: </th>
-                                <td><input type="text" name="FullName" value="${User.getFullName()}" class="form-control border-2 px-4" required></td>
-                            </tr>                    
-                            <tr>
-                                <th>Mail: </th>
-                                <td><input type="text" name="Mail" value="${User.getMail()}" class="form-control border-2 px-4" disabled></td>
+                                <th>Description: </th>
+                                <td> <input type="text" name="Description" value class="form-control border-2 px-4"> </td>
                             </tr>
                             <tr>
-                                <th>Date of Birth: </th>
-                                <td><input type="date" name="dob" value="${User.getDoB()}" id="dob" class="form-control border-2 px-4" max="${maxDate}" required></td>
+                                <th>Price: </th>
+                                <td> <input type="text" name="Price" value class="form-control border-2 px-4"> </td>
                             </tr>
                             <tr>
-                                <th>Security Question: </th>
-                                <td><select name="SQ" class="form-control border-2 px-4 bg-white">
-                                        <c:forEach items="${SEQuestionList}" var="x">
-                                            <option value="${x.getSecutiryQuestionID()}"
-                                                    <c:if test="${x.getSecutiryQuestionID() == User.getSecurityQuestionID()}">
-                                                        selected
-                                                    </c:if>>${x.getQuestion()}</option>
-                                        </c:forEach>
-                                    </select></td>
+                                <th>Discount: </th>
+                                <td> <input type="text" name="Discount" value class="form-control border-2 px-4"> </td>
                             </tr>
                             <tr>
-                                <th>Answer: </th>
-                                <td><input type="text" name="Answer" value="${User.getAnswer()}" class="form-control border-2 px-4" required></td>
+                                <th>Categories: </th>
+                                <td>
+                                    <c:forEach items="${CourseINS.loadCategoryList()}" var="x">
+                                        <input type="checkbox" name="Category${x.getCategoryID()}" value="${x.getCategoryID()}" id="cat">
+                                        <label for="cat">${x.getCategoryName()}</label>
+                                    </c:forEach>
+                                </td>                                    
                             </tr>
                             <tr>
-                                <th>Role: </th>
-                                <td><c:if test="${User.getRole() == 1}">
-                                        <input type="text" name="Role" value="Admin" class="form-control border-2 px-4" disabled>
-                                    </c:if>
-                                    <c:if test="${User.getRole() == 2}">
-                                        <input type="text" name="Role" value="Expert" class="form-control border-2 px-4" disabled>
-                                    </c:if>
-                                    <c:if test="${User.getRole() == 4}">
-                                        <input type="text" name="Role" value="Learner" class="form-control border-2 px-4" disabled>
-                                    </c:if>
+                                <th>Subjects: </th>
+                                <td>
+                                    <c:forEach items="${CourseINS.loadSubjectList()}" var="x">
+                                        <input type="checkbox" name="Subject${x.getSubjectID()}" value="${x.getSubjectID()}" id="sub">
+                                        <label for="sub">${x.getSubjectName()}</label>                                        
+                                    </c:forEach>
                                 </td>
                             </tr>
                         </table>
-                        <input type="submit" name="update" value="Update Profile" class="btn btn-primary border-2 border-secondary px-3 rounded-pill text-white" style="margin-top: 20px">
-                        <p>${inform}</p>
-                    </form>
+                        <input type="submit" name="create" value="Create" class="btn btn-primary text-white border-2 border-secondary" style="margin: 20px 0px">
+                        <p class="text-center">${inform}</p>
+                    </form>                            
                 </div>
-            </div>
+            </div>            
 
-            <div class="col-lg-1"></div>
         </div>
 
         <!-- Footer Start -->
