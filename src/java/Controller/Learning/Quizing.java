@@ -82,9 +82,6 @@ public class Quizing extends HttpServlet {
         int LessonID = -1;
         int QuizID = -1;
 
-        ses.removeAttribute("CourseID");
-        ses.removeAttribute("LessonID");
-        ses.removeAttribute("QuizID");
         try {
             CourseID = Integer.parseInt(request.getParameter("CourseID"));
             LessonID = Integer.parseInt(request.getParameter("LessonID"));
@@ -117,8 +114,12 @@ public class Quizing extends HttpServlet {
         
         int AttemptID = newAttempt.getAttemptID();
         Date date = new Date(newAttempt.getAttemptDate().getTime());
-        List<Question> QuestionList = UserDAO.INS.getListQuestionOnAttempt(u.getUserID(), CourseID, LessonID, QuizID, AttemptID);
-        UserDAO.INS.updateUserAnswer(u.getUserID(), AttemptID, CourseID, LessonID, QuizID, QuestionList.get(index).getQuestionID(), AnswerID);                
+        List<Question> QuestionList = UserDAO.INS.getListQuestionOnAttempt(u.getUserID(), CourseID, LessonID, QuizID, AttemptID);        
+        if (ses.getAttribute("first") == null) {
+            UserDAO.INS.updateUserAnswer(u.getUserID(), AttemptID, CourseID, LessonID, QuizID, QuestionList.get(index).getQuestionID(), AnswerID);                            
+        } else {
+           ses.removeAttribute("first");
+        }        
 
         if (request.getParameter("BtnPrev") != null) {
             index--;

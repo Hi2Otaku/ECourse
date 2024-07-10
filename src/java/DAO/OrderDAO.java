@@ -58,7 +58,7 @@ public class OrderDAO {
     }           
     
     public static void main(String[] args) {
-        INS.createOrder(5, 15);
+        
         System.out.println(INS.status);
     }
 

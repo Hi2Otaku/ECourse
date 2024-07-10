@@ -162,7 +162,7 @@
                                     <c:forEach items="${LessonINS.loadLessonDoc(curCourse.getCourseID(), x.getLessonID())}" var="y">                                        
                                         <tr>                                        
                                             <th><img src="img/doc.png" alt="alt" width="30px" height="30px"></th>
-                                            <td><a href="dwnlib/doc1.pdf" onclick="updateDoc(${y.getDocID()}, ${x.getLessonID()})" download> ${y.getTitle()} </a></td>                                                                               
+                                            <td><a href="dwnlib/${y .getLink()}" onclick="updateDoc(${y.getDocID()}, ${x.getLessonID()})" download> ${y.getTitle()} </a></td>                                                                               
                                             <c:if test="${UserINS.getDocProgress(User.getUserID(), curCourse.getCourseID(), x.getLessonID(), y.getDocID()) == 1}">
                                                 <td class="text-md-end"> <img src="img/completed.png" alt="alt" width="30px" height="30px"/> </td>
                                                 </c:if>

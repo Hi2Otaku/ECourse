@@ -639,7 +639,7 @@ public class CourseDAO {
         } catch (SQLException e) {
             status = "Error at createNewCourse " + e.getMessage();
         }
-    }
+    }        
     
     public static void main(String[] agrs) {
         System.out.println(INS.getCourseList(new ArrayList<>(), new ArrayList<>()).size());           

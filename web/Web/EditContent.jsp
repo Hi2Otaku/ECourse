@@ -167,15 +167,15 @@
                                 <c:forEach items="${LessonINS.loadLessonDoc(curCourse.getCourseID(), x.getLessonID())}" var="y">                                        
                                     <tr>                                        
                                         <th><img src="img/doc.png" alt="alt" width="30px" height="30px"></th>
-                                        <td><a href="dwnlib/doc1.pdf" onclick="updateDoc(${y.getDocID()}, ${x.getLessonID()})" download> ${y.getTitle()} </a></td>     
-                                        <td class="text-md-end"><a href="EditDoc?CourseID${curCourse.getCourseID()}&LessonID=${x.getLessonID()}&DocID=${y.getDocID()}">Edit</a></td>
+                                        <td><a href="dwnlib/${y.getLink()}" onclick="updateDoc(${y.getDocID()}, ${x.getLessonID()})" download> ${y.getTitle()} </a></td>     
+                                        <td class="text-md-end"><a href="EditDoc?CourseID=${curCourse.getCourseID()}&LessonID=${x.getLessonID()}&DocID=${y.getDocID()}">Edit</a></td>
                                     </tr>                                    
                                 </c:forEach>                                 
                                 <c:forEach items="${QuizINS.loadQuizByLesson(curCourse.getCourseID(), x.getLessonID())}" var="y">
                                     <tr>
                                         <th><img src="img/quiz.png" alt="alt" width="30px" height="30px"></th>       
                                         <td>${y.getQuizName()}</td>
-                                        <td class="text-md-end"><a href="EditQuiz?CourseID${curCourse.getCourseID()}&LessonID=${x.getLessonID()}&DocID=${y.getQuizID()}">Edit</a></td>
+                                        <td class="text-md-end"><a href="EditQuiz?CourseID=${curCourse.getCourseID()}&LessonID=${x.getLessonID()}&QuizID=${y.getQuizID()}">Edit</a></td>
                                     </tr>
                                 </c:forEach>
                             </table>                            

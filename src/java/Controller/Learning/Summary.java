@@ -77,12 +77,13 @@ public class Summary extends HttpServlet {
                 UserDAO.INS.updateQuizProgress(u.getUserID(), CourseID, LessonID, QuizID);
             }
             Attempt NewAttempt = UserDAO.INS.createNewUserQuizAttempt(u.getUserID(), CourseID, LessonID, QuizID);
-            List<Question> QuestionList = UserDAO.INS.createNewQuestionList(u.getUserID(), CourseID, LessonID, QuizID, NewAttempt.getAttemptID());
+            UserDAO.INS.createNewQuestionList(u.getUserID(), CourseID, LessonID, QuizID, NewAttempt.getAttemptID());
         }
 
         request.setAttribute("CourseID", CourseID);
         request.setAttribute("LessonID", LessonID);
         request.setAttribute("QuizID", QuizID);
+        ses.setAttribute("first", 1);
         request.getRequestDispatcher("/Quizing").forward(request, response);
     }
 

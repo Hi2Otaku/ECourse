@@ -160,7 +160,7 @@ public class UserDAO {
         return new Attempt(UserID, CourseID, LessonID, QuizID, list.size() + 1, tmp, tmp2, 0);
     }
 
-    public Vector<Question> createNewQuestionList(int UserID, int CourseID, int LessonID, int QuizID, int AttemptID) {
+    public void createNewQuestionList(int UserID, int CourseID, int LessonID, int QuizID, int AttemptID) {
         String sql = "Select * From [Question] Where CourseID = ? And LessonID = ? And QuizID = ?";
         Vector<Question> QuestionList = new Vector<Question>();
         try {
@@ -173,12 +173,33 @@ public class UserDAO {
                 int QuestionID = rs.getInt("QuestionID");
                 String Question = rs.getString("Question");
                 String Explaination = rs.getString("Explaination");
-                QuestionList.add(new Question(CourseID, LessonID, QuizID, QuestionID, Question, Explaination));
+                int Status = rs.getInt("Status");
+                QuestionList.add(new Question(CourseID, LessonID, QuizID, QuestionID, Question, Explaination, Status));
             }
         } catch (SQLException e) {
             status = "Error at createNewQuestionList " + e.getMessage();
         }
-        for (Question x : QuestionList) {
+        SecureRandom random = new SecureRandom();
+        int[] NumList = new int[QuestionList.size() + 2];
+        for (int i = 0; i <= QuestionList.size(); i++) {
+            NumList[i] = 0;
+        }
+
+        Quiz quiz = QuizDAO.INS.getQuiz(CourseID, LessonID, QuizID);
+
+        for (int i = 0; i < quiz.getNoQ(); i++) {
+            int num = random.nextInt() % (QuestionList.size() + 1);
+            if (num < 0) {
+                num *= -1;
+            }
+            while (NumList[num] == 1) {
+                num = random.nextInt() % (QuestionList.size() + 1);
+                if (num < 0) {
+                    num *= -1;
+                }
+            }
+            NumList[num] = 1;
+            Question x = QuestionList.get(num);
             sql = "Insert Into [UserAnswer] Values (?,?,?,?,?,?,-1)";
             try {
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -192,8 +213,7 @@ public class UserDAO {
             } catch (SQLException e) {
                 status = "Error at addNewUserAnswer " + e.getMessage();
             }
-        }
-        return QuestionList;
+        }        
     }
 
     public Vector<Question> getListQuestionOnAttempt(int UserID, int CourseID, int LessonID, int QuizID, int AttemptID) {
@@ -231,7 +251,8 @@ public class UserDAO {
                     int QuestionID = rs.getInt("QuestionID");
                     String Question = rs.getString("Question");
                     String Explaination = rs.getString("Explaination");
-                    QuestionList.add(new Question(CourseID, LessonID, QuizID, QuestionID, Question, Explaination));
+                    int Status = rs.getInt("Status");
+                    QuestionList.add(new Question(CourseID, LessonID, QuizID, QuestionID, Question, Explaination, Status));
                 }
             } catch (SQLException e) {
                 status = "Error at getListQuestionOnAttempt " + e.getMessage();

@@ -33,10 +33,6 @@
         <servlet-class>Controller.Learning.QuizNavigate</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>QuestionImport</servlet-name>
-        <servlet-class>Controller.TestContent.QuestionImport</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>PracticeList</servlet-name>
         <servlet-class>Controller.Learning.PracticeList</servlet-class>
     </servlet>
@@ -104,6 +100,38 @@
         <servlet-name>EditContent</servlet-name>
         <servlet-class>Controller.Course.EditContent</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateDoc</servlet-name>
+        <servlet-class>Controller.Lesson.CreateDoc</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditDoc</servlet-name>
+        <servlet-class>Controller.Lesson.EditDoc</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateQuiz</servlet-name>
+        <servlet-class>Controller.TestContent.CreateQuiz</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditQuiz</servlet-name>
+        <servlet-class>Controller.TestContent.EditQuiz</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QuestionList</servlet-name>
+        <servlet-class>Controller.TestContent.QuestionList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditQuestion</servlet-name>
+        <servlet-class>Controller.TestContent.EditQuestion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateQuestion</servlet-name>
+        <servlet-class>Controller.TestContent.CreateQuestion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImportQuestion</servlet-name>
+        <servlet-class>Controller.TestContent.ImportQuestion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -127,10 +155,6 @@
     <servlet-mapping>
         <servlet-name>QuizNavigate</servlet-name>
         <url-pattern>/QuizNavigate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>QuestionImport</servlet-name>
-        <url-pattern>/QuestionImport</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PracticeList</servlet-name>
@@ -199,5 +223,37 @@
     <servlet-mapping>
         <servlet-name>EditContent</servlet-name>
         <url-pattern>/EditContent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateDoc</servlet-name>
+        <url-pattern>/CreateDoc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditDoc</servlet-name>
+        <url-pattern>/EditDoc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateQuiz</servlet-name>
+        <url-pattern>/CreateQuiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditQuiz</servlet-name>
+        <url-pattern>/EditQuiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuestionList</servlet-name>
+        <url-pattern>/QuestionList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditQuestion</servlet-name>
+        <url-pattern>/EditQuestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateQuestion</servlet-name>
+        <url-pattern>/CreateQuestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportQuestion</servlet-name>
+        <url-pattern>/ImportQuestion</url-pattern>
     </servlet-mapping>
 </web-app>
