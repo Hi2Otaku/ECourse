@@ -112,16 +112,31 @@ public class ServletFilter implements Filter {
                 res.sendRedirect(req.getContextPath() + "/Login");
             }
         } else {
-            if (u.getRole() == 0) {
-                if (url.contains("Server") || url.contains("Logout")) {
-                    chain.doFilter(request, response);
-                } else {
-                    res.sendRedirect(req.getContextPath() + "/ServerRefresh");
+            switch (u.getRole()) {
+                case 0 -> {
+                    if (url.contains("Server") || url.contains("Logout")) {
+                        chain.doFilter(request, response);
+                    } else {
+                        res.sendRedirect(req.getContextPath() + "/ServerRefresh");
+                    }
                 }
-            } else {
-                chain.doFilter(request, response);
+                case 1 -> {
+                    if (url.contains("Cart") || url.contains("Shop") || url.contains("My") || url.contains("Quizing") || url.contains("Review") || url.contains("Summary") || url.contains("Server") || url.contains("CourseContent")) {
+                        res.sendRedirect(req.getContextPath() + "/CourseManage");
+                    } else {
+                        chain.doFilter(request, response);
+                    }
+                }
+                case 4 -> {
+                    if (url.contains("Create") || url.contains("Edit") || url.contains("Import") || url.contains("Server") || url.contains("Manage") || url.contains("Status")){
+                        res.sendRedirect(req.getContextPath() + "/CourseShop");
+                    } else {
+                        chain.doFilter(request, response);
+                    }
+                }
+                default -> chain.doFilter(request, response);
             }
-        }
+        } 
 //chain.doFilter(request, response);
     }
 
