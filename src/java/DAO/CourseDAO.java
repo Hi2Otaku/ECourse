@@ -70,24 +70,26 @@ public class CourseDAO {
         }
     }
     
-    public void addSubject(int SubjectID, String SubjectName) {
-        String sql = "Insert Into [Subject] Values (?,?)";
+    public void addSubject(int SubjectID, String SubjectName, int Status) {
+        String sql = "Insert Into [Subject] Values (?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, SubjectID);
             ps.setString(2, SubjectName);
+            ps.setInt(3, Status);
             ps.execute();
         } catch (SQLException e) {
             status = "Error at addSubject " + e.getMessage();
         }
     }
     
-    public void addCategory(int CategoryID, String CategoryName) {
+    public void addCategory(int CategoryID, String CategoryName, int Status) {
         String sql = "Insert Into [Category] Values (?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, CategoryID);
             ps.setString(2, CategoryName);
+            ps.setInt(3, Status);
             ps.execute();
         } catch (SQLException e) {
             status = "Error at addCategory " + e.getMessage();
@@ -103,7 +105,8 @@ public class CourseDAO {
             while (rs.next()) {
                 int SubjectID = rs.getInt("SubjectID");
                 String SubjectName = rs.getString("SubjectName");
-                SubjectList.add(new Subject(SubjectID, SubjectName));
+                int Status = rs.getInt("Status");
+                SubjectList.add(new Subject(SubjectID, SubjectName, Status));
             }
         } catch (SQLException e) {
             status = "Error at loadSubjectList " + e.getMessage();
@@ -120,7 +123,8 @@ public class CourseDAO {
             while (rs.next()) {
                 int CategoryID = rs.getInt("CategoryID");
                 String CategoryName = rs.getString("CategoryName");
-                CategoryList.add(new Category(CategoryID, CategoryName));
+                int Status = rs.getInt("Status");
+                CategoryList.add(new Category(CategoryID, CategoryName, Status));
             }
         } catch (SQLException e) {
             status = "Error at loadCategoryList " + e.getMessage();
@@ -147,14 +151,15 @@ public class CourseDAO {
         }
     }
     
-    public void updateCategory(int CategoryID, String CategoryName) {
+    public void updateCategory(int CategoryID, String CategoryName, int Status) {
         String sql = "Update [Category]"
-                + "\n Set CategoryName = ?"
+                + "\n Set CategoryName = ?, Status = ?"
                 + "\n Where CategoryID = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, CategoryName);
-            ps.setInt(2, CategoryID);
+            ps.setInt(2, Status);
+            ps.setInt(3, CategoryID);
             ps.execute();
         } catch (Exception e) {
             status = "Error at updateCategory " + e.getMessage();
@@ -181,14 +186,15 @@ public class CourseDAO {
         }
     }
     
-    public void updateSubject(int SubjectID, String SubjectName) {
+    public void updateSubject(int SubjectID, String SubjectName, int Status) {
         String sql = "Update [Subject]"
-                + "\n Set SubjectName = ?"
+                + "\n Set SubjectName = ?, Status = ?"
                 + "\n Where SubjectID = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, SubjectName);
-            ps.setInt(2, SubjectID);
+            ps.setInt(3, SubjectID);
+            ps.setInt(2, Status);
             ps.execute();
         } catch (Exception e) {
             status = "Error at updateSubject " + e.getMessage();
@@ -333,7 +339,11 @@ public class CourseDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String CategoryName = rs.getString("CategoryName");
-                courseCategory = courseCategory.concat(CategoryName + ", ");
+                if (courseCategory.equals("")) {
+                    courseCategory = courseCategory.concat(CategoryName);
+                } else {
+                    courseCategory = courseCategory.concat(", " + CategoryName);
+                }                
             }
         } catch (SQLException e) {
             status = "Error at getCourseCategory " + e.getMessage();
@@ -417,7 +427,8 @@ public class CourseDAO {
             while (rs.next()) {
                 int CategoryID = rs.getInt("CategoryID");
                 String CategoryName = rs.getString("CategoryName");
-                CategoryList.add(new Category(CategoryID, CategoryName));
+                int Status = rs.getInt("Status");
+                CategoryList.add(new Category(CategoryID, CategoryName, Status));
             }
         } catch (SQLException e) {
             status = "Error at getCategoryByCourse " + e.getMessage();
@@ -437,7 +448,8 @@ public class CourseDAO {
             while (rs.next()) {
                 int SubjectID = rs.getInt("SubjectID");
                 String SubjectName = rs.getString("SubjectName");
-                SubjectList.add(new Subject(SubjectID, SubjectName));
+                int Status = rs.getInt("Status");
+                SubjectList.add(new Subject(SubjectID, SubjectName, Status));
             }
         } catch (SQLException e) {
             status = "Error at getSubjectByCourse " + e.getMessage();
@@ -573,7 +585,7 @@ public class CourseDAO {
             ps.setInt(1, CategoryID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                return new Category(CategoryID, rs.getString("CategoryName"));
+                return new Category(CategoryID, rs.getString("CategoryName"), rs.getInt("Status"));
             }
         } catch (SQLException e) {
             status = "Error at getCategoryById " + e.getMessage();
@@ -588,7 +600,7 @@ public class CourseDAO {
             ps.setInt(1, SubjectID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                return new Subject(SubjectID, rs.getString("SubjectName"));
+                return new Subject(SubjectID, rs.getString("SubjectName"), rs.getInt("Status"));
             }
         } catch (SQLException e) {
             status = "Error at getSubjectById " + e.getMessage();
@@ -641,8 +653,38 @@ public class CourseDAO {
         }
     }        
     
+    public int getSubjectNum(int SubjectID) {
+        String sql = "Select COUNT(*) as cnt From [CourseSubject] Where SubjectID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, SubjectID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("cnt");
+            }
+        } catch (SQLException e) {
+            status = "Error at getSubjectNum " + e.getMessage();
+        }
+        return 0;
+    }
+    
+    public int getCategoryNum(int CategoryID) {
+        String sql = "Select COUNT(*) as cnt From [CourseCategory] Where CategoryID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, CategoryID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("cnt");
+            }
+        } catch (SQLException e) {
+            status = "Error at getCategoryNum " + e.getMessage();
+        }
+        return 0;
+    }
+    
     public static void main(String[] agrs) {
-        System.out.println(INS.getCourseList(new ArrayList<>(), new ArrayList<>()).size());           
+        INS.loadSubjectList();
         System.out.println(INS.status);
     }
     

@@ -34,17 +34,17 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Template Stylesheet -->
-        <link href="css/style.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">       
 
         <script>
             function setAttempt(ID) {
                 document.getElementById("AttemptID").value = ID;
             }
+        </script>       
 
-        </script>
-
+        
     </head>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <body>
 
         <!-- Spinner Start -->
@@ -98,7 +98,7 @@
             </div>
         </div>
         <!-- Navbar End --> 
-        
+
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6">Quiz Summary</h1>
             <ol class="breadcrumb justify-content-center mb-0">
@@ -112,88 +112,112 @@
         <input type="text" name="CourseID" value="${CourseID}" hidden>
         <input type="text" name="LessonID" value="${LessonID}" hidden>
         <input type="text" name="QuizID" value="${QuizID}" hidden> 
-        <div class="container-fluid py-5">
-            <div class="container">
+        <div class="container-fluid row" style="padding: 50px"> 
+            <div class="text-center">                    
+                <h1 class="display-5 mb-5 text-dark">${Quiz.getQuizName()}</h1>
+            </div>
+            <div class="col-lg-9 align-items-center">
+                <div class="container bg-white rounded">                   
 
-                <div class="text-center">                    
-                    <h1 class="display-5 mb-5 text-dark">${Quiz.getQuizName()}</h1>
-                </div>
-
-                <c:if test="${AttemptList.size() < 1}">
-                    <form action="Summary" method="post">
-                        <div class="col-xl-12 d-flex mt-5 justify-content-center">
-                            <input type="text" name="CourseID" value="${CourseID}" hidden>
-                            <input type="text" name="LessonID" value="${LessonID}" hidden>
-                            <input type="text" name="QuizID" value="${QuizID}" hidden>                                      
-                            <button class="btn border border-secondary rounded-pill px-3 text-primary">Attempt Quiz Now</button>
-                        </div>
-                    </form>
-                </c:if>
-
-                <c:if test="${AttemptList.size() > 0}">
-                    <div class="row justify-content-center">                        
-                        <div class="col-lg-12 row">
-                            <form action="Review" method="post">
+                    <c:if test="${AttemptList.size() < 1}">
+                        <form action="Summary" method="post">
+                            <div class="col-xl-12 d-flex mt-5 justify-content-center">
                                 <input type="text" name="CourseID" value="${CourseID}" hidden>
                                 <input type="text" name="LessonID" value="${LessonID}" hidden>
-                                <input type="text" name="QuizID" value="${QuizID}" hidden> 
-                                <input type="text" name="AttemptID" value id="AttemptID" hidden>
-                                <hr/>
-                                <table>
+                                <input type="text" name="QuizID" value="${QuizID}" hidden>                                      
+                                <button class="btn border border-secondary rounded-pill px-3 text-primary">Attempt Quiz Now</button>
+                            </div>
+                        </form>
+                    </c:if>
 
-                                    <thead>
-                                    <th class="col-lg-2">Attempt<hr/></th>
-                                    <th class="col-lg-4">State<hr/></th>
-                                    <th class="col-lg-3">Marks / Number of Questions<hr/></th>
-                                    <th class="col-lg-3">Grades / 10<hr/></th>
-                                    <th class="col-lg-3">Review<hr/></th>                                    
-                                    </thead>
-
-                                    <tbody>                                    
-                                        <c:forEach items="${AttemptList}" var="x">
-                                            <tr>                             
-                                                <c:if test="${x.getFinished() == 0}">
-                                                    <td>${x.getAttemptID()}</td>
-                                                    <td>
-                                                        <h5>In Progess</h5>
-                                                        <p>Attempt Date: ${x.getAttemptDate()}</p>
-                                                    </td>
-                                                    <td>N/A</td>
-                                                    <td>N/A</td>
-                                                </c:if>
-                                                <c:if test="${x.getFinished() == 1}">
-                                                    <td>${x.getAttemptID()}</td>
-                                                    <td>
-                                                        <h5>Finished</h5>
-                                                        <p>Submitted Date: ${x.getSubmittedDate()}</p>
-                                                    </td>
-                                                    <td>${UserINS.getAttemptMark(User.getUserID(), CourseID, LessonID, QuizID, x.getAttemptID())} / ${Quiz.getNoQ()}</td>
-                                                    <td>${UserINS.getAttemptMark(User.getUserID(), CourseID, LessonID, QuizID, x.getAttemptID()) / Quiz.getNoQ() * 10}</td>
-                                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary" onclick="setAttempt(${x.getAttemptID()})">Review</button></td>
-                                                </c:if>               
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>                                
-                            </form>
-                        </div>
-                    </div>
-                    <form action="Summary" method="post">
-                        <div class="col-xl-12 d-flex mt-5 justify-content-center">
+                    <c:if test="${AttemptList.size() > 0}">                                                                  
+                        <form action="Review" method="post">
                             <input type="text" name="CourseID" value="${CourseID}" hidden>
                             <input type="text" name="LessonID" value="${LessonID}" hidden>
                             <input type="text" name="QuizID" value="${QuizID}" hidden> 
-                            <c:set var="Newest" value="${UserINS.getNewestAttempt(User.getUserID(), CourseID, LessonID, QuizID)}"></c:set>
-                            <c:if test="${Newest.getFinished() == 1}">
-                                <button class="btn border border-secondary rounded-pill px-3 text-primary">Re-Attempt Quiz</button>
-                            </c:if>
-                            <c:if test="${Newest.getFinished() == 0}">
-                                <button class="btn border border-secondary rounded-pill px-3 text-primary">Continue the last attempt</button>
-                            </c:if>
-                        </div>
-                    </form>
+                            <input type="text" name="AttemptID" value id="AttemptID" hidden>
+                            <hr/>
+                            <table style="width: 100%">
+                                <thead>
+                                <th>Attempt<hr/></th>
+                                <th>State<hr/></th>
+                                <th>Marks / NoQs<hr/></th>
+                                <th>Grades / 10<hr/></th>
+                                <th>Review<hr/></th>                                    
+                                </thead>
 
-                </c:if>
+                                <tbody>                                    
+                                    <c:forEach items="${AttemptList}" var="x">
+                                        <tr>                             
+                                            <c:if test="${x.getFinished() == 0}">
+                                                <td>${x.getAttemptID()}</td>
+                                                <td>
+                                                    <h5>In Progess</h5>
+                                                    <p>Attempt Date: ${x.getAttemptDate()}</p>
+                                                </td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </c:if>
+                                            <c:if test="${x.getFinished() == 1}">
+                                                <td>${x.getAttemptID()}</td>
+                                                <td>
+                                                    <h5>Finished</h5>
+                                                    <p>Submitted Date: ${x.getSubmittedDate()}</p>
+                                                </td>
+                                                <td>${UserINS.getAttemptMark(User.getUserID(), CourseID, LessonID, QuizID, x.getAttemptID())} / ${Quiz.getNoQ()}</td>
+                                                <td>${UserINS.getAttemptMark(User.getUserID(), CourseID, LessonID, QuizID, x.getAttemptID()) / Quiz.getNoQ() * 10}</td>
+                                                <td><button class="btn border border-secondary rounded-pill px-3 text-primary" onclick="setAttempt(${x.getAttemptID()})">Review</button></td>
+                                            </c:if>               
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>                                
+                        </form>                            
+                        <form action="Summary" method="post">
+                            <div class="col-xl-12 d-flex mt-5 justify-content-center">
+                                <input type="text" name="CourseID" value="${CourseID}" hidden>
+                                <input type="text" name="LessonID" value="${LessonID}" hidden>
+                                <input type="text" name="QuizID" value="${QuizID}" hidden> 
+                                <c:set var="Newest" value="${UserINS.getNewestAttempt(User.getUserID(), CourseID, LessonID, QuizID)}"></c:set>
+                                <c:if test="${Newest.getFinished() == 1}">
+                                    <button class="btn border border-secondary rounded-pill px-3 text-primary">Re-Attempt Quiz</button>
+                                </c:if>
+                                <c:if test="${Newest.getFinished() == 0}">
+                                    <button class="btn border border-secondary rounded-pill px-3 text-primary">Continue the last attempt</button>
+                                </c:if>
+                            </div>
+                        </form>
+
+                    </c:if>
+                </div>
+            </div>
+            <div class="col-lg-3 align-items-center">
+                <p>Last 10 Attempts:</p>  
+                <canvas id="myChart" style="width:100%;"></canvas>
+                <script>
+                    
+                    const xValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                    const yValues = ${ilist};
+                    new Chart("myChart", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                    fill: false,
+                                    lineTension: 0,
+                                    backgroundColor: "rgba(0,0,255,1.0)",
+                                    borderColor: "rgba(0,0,255,0.1)",
+                                    data: yValues
+                                }]
+                        },
+                        options: {
+                            legend: {display: false},
+                            scales: {
+                                yAxes: [{ticks: {min: 0, max: 10}}]
+                            }
+                        }
+                    });
+                </script>
             </div>
         </div>
 
@@ -229,8 +253,7 @@
         <script src="lib/easing/easing.min.js"></script>
         <script src="lib/waypoints/waypoints.min.js"></script>
         <script src="lib/lightbox/js/lightbox.min.js"></script>
-        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>        
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
     </body>

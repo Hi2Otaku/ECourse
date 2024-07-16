@@ -141,7 +141,7 @@
             <input type="text" name="buyId" value id="buyId" hidden>
             <div class="container-fluid fruite py-5">
                 <div class="container py-5">
-                    <h1 class="mb-4">Courses shop</h1>
+                    <h1 class="mb-4">Filter</h1>
                     <div class="row g-4">
                         <div class="col-lg-12">
                             <div class="row g-4">
@@ -156,6 +156,11 @@
                             <div class="row g-4">
                                 <div class="col-lg-3">
                                     <div class="row g-4">
+
+                                        <div class="col-lg-12">
+                                            <input type="search" name="search" value="${search}" placeholder="Course Name" style="width: 250px" class="form-control">
+                                        </div>
+
                                         <div class="col-lg-12">
                                             <div class="mb-3">                                                    
                                                 <div class="navbar-nav mx-auto">
@@ -176,7 +181,7 @@
                                             </div>
                                         </div>           
 
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12" style="margin: -20px 0px">
                                             <div class="mb-3">
                                                 <div class="navbar-nav mx-auto">
                                                     <div class="nav-item dropdown">

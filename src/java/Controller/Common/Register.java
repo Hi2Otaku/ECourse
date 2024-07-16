@@ -32,7 +32,11 @@ public class Register extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {       
+        
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        
         SEQuestionDAO.INS.load();
+        request.setAttribute("date", date);
         request.setAttribute("SQuestionList", SEQuestionDAO.INS.getQel());
         request.getRequestDispatcher("/Web/Register.jsp").forward(request, response);
     } 
@@ -44,12 +48,12 @@ public class Register extends HttpServlet {
             String Username = request.getParameter("username");
             String Password = request.getParameter("pass");
             String Confirm = request.getParameter("confirm");
+            int Gender = Integer.parseInt(request.getParameter("gender"));
             String Mail = request.getParameter("mail");
             String name = request.getParameter("fullname");
             String dob = request.getParameter("dob");
             int SQ = Integer.parseInt(request.getParameter("SQ"));
-            String Answer = request.getParameter("answer");
-            int Role = Integer.parseInt(request.getParameter("role"));
+            String Answer = request.getParameter("answer");            
             
             if (!Password.equals(Confirm)) {
                 request.setAttribute("err", "Two password is not the same!");
@@ -65,7 +69,7 @@ public class Register extends HttpServlet {
             byte[] hash = factory.generateSecret(spec).getEncoded();       
             Base64.Encoder enc = Base64.getEncoder();
                         
-            UserDAO.INS.addUser(Username, enc.encodeToString(hash), enc.encodeToString(salt), Mail, name, dob, SQ, Answer, Role);
+            UserDAO.INS.addUser(Username, enc.encodeToString(hash), enc.encodeToString(salt), Gender, Mail, name, dob, SQ, Answer, 4);
             
             request.getRequestDispatcher("Web/Login.jsp").forward(request, response);
         } catch (NoSuchAlgorithmException ex) {

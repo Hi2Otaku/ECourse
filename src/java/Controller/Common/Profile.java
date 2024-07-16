@@ -50,10 +50,11 @@ public class Profile extends HttpServlet {
         
         String Fullname = request.getParameter("FullName");
         String dob = request.getParameter("dob");
+        int Gender = Integer.parseInt(request.getParameter("Gender"));
         int SQ = Integer.parseInt(request.getParameter("SQ"));
         String Answer = request.getParameter("Answer");
         
-        UserDAO.INS.updateProfile(u.getUserID(), Fullname, dob, SQ, Answer);
+        UserDAO.INS.updateProfile(u.getUserID(), Fullname, dob, SQ, Answer, Gender);
         
         ses.setAttribute("User", UserDAO.INS.getUserByName(u.getUserName()));
         

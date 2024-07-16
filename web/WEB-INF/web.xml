@@ -148,6 +148,14 @@
         <servlet-name>ChangeUserStatus</servlet-name>
         <servlet-class>Controller.Admin.ChangeUserStatus</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SubjectManage</servlet-name>
+        <servlet-class>Controller.Course.SubjectManage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoryManage</servlet-name>
+        <servlet-class>Controller.Course.CategoryManage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -287,5 +295,13 @@
     <servlet-mapping>
         <servlet-name>ChangeUserStatus</servlet-name>
         <url-pattern>/ChangeUserStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectManage</servlet-name>
+        <url-pattern>/SubjectManage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryManage</servlet-name>
+        <url-pattern>/CategoryManage</url-pattern>
     </servlet-mapping>
 </web-app>

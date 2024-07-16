@@ -15,6 +15,7 @@ public class User {
     private String UserName;
     private String salt;
     private String Password;
+    private int Gender;
     private String Mail;
     private String FullName;
     private Date DoB;
@@ -23,19 +24,31 @@ public class User {
     private int Role;
     private int Status;
 
-    public User(int UserID, String UserName, String salt, String Password, String Mail, String FullName, Date DoB, int SecurityQuestionID, String Answer, int Role, int Status) {
+    public User() {
+    }
+
+    public User(int UserID, String UserName, String salt, String Password, int Gender, String Mail, String FullName, Date DoB, int SecurityQuestionID, String Answer, int Role, int Status) {
         this.UserID = UserID;
         this.UserName = UserName;
         this.salt = salt;
         this.Password = Password;
+        this.Gender = Gender;
         this.Mail = Mail;
         this.FullName = FullName;
         this.DoB = DoB;
         this.SecurityQuestionID = SecurityQuestionID;
         this.Answer = Answer;
-        this.Role = Role;        
+        this.Role = Role;
         this.Status = Status;
     }
+
+    public int getGender() {
+        return Gender;
+    }
+
+    public void setGender(int Gender) {
+        this.Gender = Gender;
+    }    
 
     public String getSalt() {
         return salt;

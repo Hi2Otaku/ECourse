@@ -59,6 +59,7 @@ public class UserDAO {
                 String UserName = rs.getString("UserName");
                 String salt = rs.getString("salt");
                 String Password = rs.getString("Password");
+                int Gender = rs.getInt("Gender");
                 String Mail = rs.getString("Mail");
                 String FullName = rs.getString("FullName");
                 java.sql.Date DoB = rs.getDate("DoB");
@@ -66,7 +67,7 @@ public class UserDAO {
                 String Answer = rs.getString("Answer");
                 int Role = rs.getInt("Role");
                 int Status = rs.getInt("Status");
-                ul.add(new User(UserID, UserName, salt, Password, Mail, FullName, DoB, SecurityQuestionID, Answer, Role, Status));
+                ul.add(new User(UserID, UserName, salt, Password, Gender, Mail, FullName, DoB, SecurityQuestionID, Answer, Role, Status));
             }
         } catch (SQLException e) {
             status = "Error at load User" + e.getMessage();
@@ -189,12 +190,12 @@ public class UserDAO {
         Quiz quiz = QuizDAO.INS.getQuiz(CourseID, LessonID, QuizID);
 
         for (int i = 0; i < quiz.getNoQ(); i++) {
-            int num = random.nextInt() % (QuestionList.size() + 1);
+            int num = random.nextInt() % (QuestionList.size());
             if (num < 0) {
                 num *= -1;
             }
             while (NumList[num] == 1) {
-                num = random.nextInt() % (QuestionList.size() + 1);
+                num = random.nextInt() % (QuestionList.size());
                 if (num < 0) {
                     num *= -1;
                 }
@@ -368,9 +369,8 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             status = "Error at loadSalt " + e.getMessage();
-        }
-
-        if (ssalt == null) {
+        }      
+        if (ssalt.equals("")) {
             return "No Username Exist!";
         } else {
             Base64.Decoder dnc = Base64.getDecoder();
@@ -386,22 +386,23 @@ public class UserDAO {
         }
     }
 
-    public void addUser(String username, String password, String salt, String mail, String fullname, String dob, int sq, String answer, int role) {
+    public void addUser(String username, String password, String salt, int gender, String mail, String fullname, String dob, int sq, String answer, int role) {
         INS.load();
-        String sql = "Insert Into [User] Values(?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "Insert Into [User] Values(?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, INS.getUl().size() + 1);
             ps.setString(2, username);
             ps.setString(4, password);
             ps.setString(3, salt);
-            ps.setString(5, mail);
-            ps.setString(6, fullname);
-            ps.setString(7, dob);
-            ps.setInt(8, sq);
-            ps.setString(9, answer);
-            ps.setInt(10, role);
-            ps.setInt(11, 1);
+            ps.setInt(5, gender);
+            ps.setString(6, mail);
+            ps.setString(7, fullname);
+            ps.setString(8, dob);
+            ps.setInt(9, sq);
+            ps.setString(10, answer);
+            ps.setInt(11, role);
+            ps.setInt(12, 1);
             ps.execute();
         } catch (SQLException e) {
             status = "Error at addUser " + e.getMessage();
@@ -530,9 +531,9 @@ public class UserDAO {
         }
     }
 
-    public void updateProfile(int UserID, String Fullname, String dob, int SQ, String Answer) {
+    public void updateProfile(int UserID, String Fullname, String dob, int SQ, String Answer, int Gender) {
         String sql = "Update [User]"
-                + "\n Set FullName = ?, DoB = ?, SecurityQuestionID = ?, Answer = ?"
+                + "\n Set FullName = ?, DoB = ?, SecurityQuestionID = ?, Answer = ?, Gender = ?"
                 + "\n Where UserID = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -540,7 +541,8 @@ public class UserDAO {
             ps.setString(2, dob);
             ps.setInt(3, SQ);
             ps.setString(4, Answer);
-            ps.setInt(5, UserID);
+            ps.setInt(5, Gender);
+            ps.setInt(6, UserID);
             ps.execute();
         } catch (SQLException e) {
             status = "Error at updateProfile " + e.getMessage();
@@ -774,6 +776,7 @@ public class UserDAO {
                 String UserName = rs.getString("UserName");
                 String salt = rs.getString("salt");
                 String Password = rs.getString("Password");
+                int Gender = rs.getInt("Gender");
                 String Mail = rs.getString("Mail");
                 String FullName = rs.getString("FullName");
                 java.sql.Date DoB = rs.getDate("DoB");
@@ -781,7 +784,7 @@ public class UserDAO {
                 String Answer = rs.getString("Answer");
                 int Role = rs.getInt("Role");
                 int Status = rs.getInt("Status");
-                UserList.add(new User(UserID, UserName, salt, Password, Mail, FullName, DoB, SecurityQuestionID, Answer, Role, Status));
+                UserList.add(new User(UserID, UserName, salt, Password, Gender, Mail, FullName, DoB, SecurityQuestionID, Answer, Role, Status));
             }
         } catch (SQLException e) {
             status = "Error at getUserList " + e.getMessage();
@@ -816,9 +819,38 @@ public class UserDAO {
             status = "Error at updateUserStatus " + e.getMessage();
         }
     }
+    
+    public ArrayList<Integer> getTop10AttemptMark(int UserID, int CourseID, int LessonID, int QuizID) {
+        String sql = "Select Top 10 * From [Attempt] Where UserID = ? And CourseID = ? And LessonID = ? And QuizID = ? Order By SubmittedDate desc";
+        List<Attempt> list = new ArrayList<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, UserID);
+            ps.setInt(2, CourseID);
+            ps.setInt(3, LessonID);
+            ps.setInt(4, QuizID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int AttemptID = rs.getInt("AttemptID");
+                java.sql.Timestamp AttemptDate = rs.getTimestamp("AttemptDate");
+                java.sql.Timestamp SubmittedDate = rs.getTimestamp("SubmittedDate");
+                int Finished = rs.getInt("Finished");
+                list.add(new Attempt(UserID, CourseID, LessonID, QuizID, AttemptID, AttemptDate, SubmittedDate, Finished));
+            }
+        } catch (SQLException e) {
+            status = "Error at getTop10AttemptMark " + e.getMessage();
+        }
+        
+        ArrayList<Integer> ilist = new ArrayList<>();
+        for (Attempt atm : list) {
+            ilist.add(INS.getAttemptMark(UserID, CourseID, LessonID, QuizID, atm.getAttemptID()) * 10 / QuizDAO.INS.getQuiz(CourseID, LessonID, QuizID).getNoQ());
+        }
+        return ilist;
+    }
 
     public static void main(String agrs[]) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        INS.updateUserStatus(4);
+        System.out.println(INS.getNewestAttempt(7, 1, 1, 1).getAttemptID());
+        INS.createNewQuestionList(7, 1, 1, 1, 1);
         System.out.println(INS.status);
     }
 }

@@ -32,7 +32,12 @@ public class ChangeUserStatus extends HttpServlet {
             return;
         }
         
-        UserDAO.INS.updateUserStatus(UserID);
+        if (UserID != 1) {
+            UserDAO.INS.updateUserStatus(UserID);
+        } else {
+            request.setAttribute("err", "You can't inactive Admin Status!");
+        }
+        
         
         response.sendRedirect(request.getContextPath() + "/UserManage");        
     } 

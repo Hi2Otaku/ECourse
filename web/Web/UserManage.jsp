@@ -156,20 +156,20 @@
         </div>                
         <!-- Single Page Header End -->     
 
-        <form action="UserManage" id="manage">
 
-            <div class="container-fluid">
-                <div class="col-lg-12 align-items-center">
-                    <div class="counter bg-white rounded p-5">              
-                        <h3 style="color: grey">Feature</h3>
-                        <button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Categories Manage</button>
-                        <button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Subjects Manage</button>
-                        <button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 50px">Courses Manage</button>
-                        <button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Users Manage</button>
-                    </div>
+
+        <div class="container-fluid">
+            <div class="col-lg-12 align-items-center">
+                <div class="counter bg-white rounded p-5">              
+                    <h3 style="color: grey">Feature</h3>
+                    <a href="CategoryManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Categories Manage</button></a>
+                    <a href="SubjectManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Subjects Manage</button></a>
+                    <a href="CourseManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Courses Manage</button></a>
+                    <a href="UserManage"><button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 50px">Users Manage</button></a>
                 </div>
-            </div>        
-
+            </div>
+        </div>        
+        <form action="UserManage" id="manage">
             <div class="container-fluid py-2 row">            
 
                 <div class="col-lg-3 align-items-center">
@@ -177,60 +177,70 @@
 
                         <h3 style="color: grey">Filter</h3>
 
+                        <div class="col-lg-12">
+                            <input type="search" name="search" value="${search}" placeholder="User Name" style="width: 250px; margin: 20px 0px" class="form-control">
+                        </div>
+
                         <h5 class="text-md-start">Status</h5>
                         <div class="text-md-start">
                             <input type="checkbox" name="statusa" value="${statusa}"
                                    <c:if test="${statusa != null}">checked</c:if> > Active <br/>
                             <input type="checkbox" name="statusi" value="${statusi}"
                                    <c:if test="${statusi != null}">checked</c:if> > Inactive <br/>
-                        </div>
+                            </div>
 
-                        <div class="text-md-start">
-                            <h5 class="text-md-start">Sort By</h5>
-                            <input type="radio" name="sort" value="ID"
-                                   <c:if test="${sort == 'ID'}"> checked </c:if> > Id <br/>
-                            <input type="radio" name="sort" value="UserName"
-                                   <c:if test="${sort == 'UserName'}"> checked </c:if> > User Name  <br/>
-                            <input type="radio" name="sort" value="DoB"
-                                   <c:if test="${sort == 'DoB'}"> checked </c:if> > Date of Birth <br/>
-                        </div>
+                            <div class="text-md-start">
+                                <h5 class="text-md-start">Sort By</h5>
+                                <input type="radio" name="sort" value="ID"
+                                <c:if test="${sort == 'ID'}"> checked </c:if> > Id <br/>
+                                <input type="radio" name="sort" value="UserName"
+                                <c:if test="${sort == 'UserName'}"> checked </c:if> > User Name  <br/>
+                                <input type="radio" name="sort" value="DoB"
+                                <c:if test="${sort == 'DoB'}"> checked </c:if> > Date of Birth <br/>
+                            </div>
 
-                        <button name="apply" class="btn border-secondary border-2 rounded-pill" onclick="submit()">Apply Filter</button>
+                            <button name="apply" class="btn border-secondary border-2 rounded-pill" onclick="submit()">Apply Filter</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-lg-9 align-items-center">
-                    <div class="counter bg-white rounded p-5">                    
-                        <table style="width: 100%">
-                            <thead>
-                            <th>ID</th>
-                            <th>User Name</th>
-                            <th>Mail</th>
-                            <th>Date of Birth</th>
-                            <th>Full Name</th>
-                            <th>Role</th>                                                
-                            <th>Status</th>                            
-                            <th>Edit</th>
-                            </thead>
-                            <tbody>
+                    <div class="col-lg-9 align-items-center">
+                        <div class="counter bg-white rounded p-5">                    
+                            <table style="width: 100%">
+                                <thead>
+                                <th>ID</th>
+                                <th>User Name</th>
+                                <th>Gender</th>
+                                <th>Mail</th>
+                                <th>Date of Birth</th>
+                                <th>Full Name</th>
+                                <th>Role</th>                                                
+                                <th>Status</th>                            
+                                <th>Edit</th>
+                                </thead>
+                                <tbody>
                                 <c:forEach items="${UserList}" var="x" begin="${paging.getBegin()}" end="${paging.getEnd() - 1}">
                                     <tr>
                                         <td> ${x.getUserID()} </td>
                                         <td> ${x.getUserName()} </td>
+                                        <td> <c:if test="${x.getGender() == 1}">Female</c:if>
+                                            <c:if test="${x.getGender() == 0}">Male</c:if></td>
                                         <td> ${x.getMail()} </td>
                                         <td> ${x.getDoB()} </td>
                                         <td> ${x.getFullName()}</td>
                                         <td> ${x.getRole()}</td>                                                                        
                                         <td> <c:if test="${x.getStatus() == 1}">Active</c:if>
                                             <c:if test="${x.getStatus() == 0}">Inactive</c:if></td>
-                                        <td> <a href="ChangeUserStatus?UserID=${x.getUserID()}">
-                                                Change Status
-                                            </a>
+                                        <td><c:if test="${x.getUserID() != 1}">
+                                                <a href="ChangeUserStatus?UserID=${x.getUserID()}">
+                                                    Change Status
+                                                </a>
+                                            </c:if> 
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>                        
                         </table>
+                        ${err}
                         <div class="col-12">
                             <div class="d-flex justify-content-center mt-5">
                                 <input type="text" name="index" value="${paging.getIndex()}" hidden>
@@ -249,7 +259,7 @@
                                 <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnNext" value=&raquo;>
                                 <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnEnd" value=&Gg;>
                             </div>
-                        </div>                        
+                        </div>                                    
                     </div>
                 </div>
 

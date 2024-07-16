@@ -1,6 +1,6 @@
 <%-- 
-    Document   : MyCourse
-    Created on : Jun 30, 2024, 2:09:30 AM
+    Document   : CategoryManage
+    Created on : Jul 14, 2024, 8:06:43 PM
     Author     : hi2ot
 --%>
 
@@ -11,7 +11,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Profile</title>
+        <title>Course Manage</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -36,9 +36,12 @@
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
         <script>
-            function change(x) {
-                document.getElementById("status").value = x;
-                document.getElementById("mycourse").submit();
+            function submit() {
+                document.getElementById("manage").submit();
+            }
+            function movePage(x) {
+                document.getElementById("btn").value = x;
+                submit();
             }
         </script>
 
@@ -47,14 +50,18 @@
                 padding: 10px
             }
 
+            th {
+
+            }
+
             td {
                 width: 500px
             }
 
-            .ScrollStyle
-            {
-                max-height: 500px;
-                overflow-y: scroll;
+            tr {
+                border-bottom: 1px solid orange;
+                border-collapse: collapse;
+
             }
         </style>
 
@@ -91,10 +98,16 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="Home" class="nav-item nav-link">Home</a>
-                            <a href="CourseShop" class="nav-item nav-link">Shop</a>
-                            <a href="MyCourse" class="nav-item nav-link active">My Courses</a>                                                            
-                            <a href="Cart" class="nav-item nav-link">Cart</a>                                                                                                            
+                            <a href="index.html" class="nav-item nav-link">Home</a>
+                            <a href="CourseShop" class="nav-item nav-link active">Shop</a>
+                            <a href="MyCourse" class="nav-item nav-link">My Courses</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="Cart" class="dropdown-item">Cart</a>                                                                        
+                                    <a href="404.html" class="dropdown-item">404 Page</a>
+                                </div>
+                            </div>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
@@ -135,84 +148,104 @@
 
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">My Courses</h1>
+            <h1 class="text-center text-white display-6">Profile</h1>
             <ol class="breadcrumb justify-content-center mb-0">
                 <li class="breadcrumb-item"><a href="Home">Home</a></li>                
-                <li class="breadcrumb-item active text-white">My Courses</li>
+                <li class="breadcrumb-item active text-white">Profile</li>
             </ol>
         </div>                
         <!-- Single Page Header End -->     
 
 
-        <div class="container-fluid py-5 row">
-            <div class="col-lg-1">                
-            </div>
 
-            <div class="col-lg-3 align-items-center">
-                <div class="counter bg-white rounded p-5">      
-                    <h4 style="color: grey">Status</h4>
-                    <form action="MyCourse" method="get" id="mycourse">
-                        <input type="text" name="status" value="${status}" id="status" hidden>
-                        <c:if test="${status == 0}">
-                            <button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 0px" onclick="change(0)">In Progress</button>
-                        </c:if>
-                        <c:if test="${status != 0}">
-                            <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px" onclick="change(0)">In Progress</button>
-                        </c:if>
-                        <br/>
-                        <c:if test="${status != 0}">
-                            <button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 0px" onclick="change(1)">Completed</button>
-                        </c:if>
-                        <c:if test="${status == 0}">
-                            <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px" onclick="change(1)">Completed</button>
-                        </c:if>
-                    </form>
+        <div class="container-fluid">
+            <div class="col-lg-12 align-items-center">
+                <div class="counter bg-white rounded p-5">              
+                    <h3 style="color: grey">Feature</h3>
+                    <a href="CategoryManage"><button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 50px">Categories Manage</button></a>
+                    <a href="SubjectManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Subjects Manage</button></a>
+                    <a href="CourseManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Courses Manage</button></a>
+                    <a href="UserManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Users Manage</button></a>
                 </div>
             </div>
+        </div>        
+        <form action="CategoryManage" id="manage">
+            <div class="container-fluid py-2 row">            
 
-            <div class="col-lg-7">
-                <div class="counter bg-white rounded p-5 row">
-                    <c:forEach items="${CourseList}" var="x" begin="${paging.getBegin()}" end="${paging.getEnd() - 1}">                                            
-                        <div class="col-md-6 col-lg-6 col-xl-4">
-                            <div class="rounded position-relative fruite-item">
-                                <div class="fruite-img">
-                                    <img src="img/lesson.png" class="img-fluid w-100 rounded-top" alt="">
-                                </div>                                            
-                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                    <h4>${x.getCourseName()}</h4>
-                                    <p>${x.getDescription()}</p>
-                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                        <p style="margin-top: 10px">Progress: ${UserINS.getCourseProgress(User.getUserID(), x.getCourseID())}%</p>
-                                        <a href="CourseContent?CourseID=${x.getCourseID()}"><button class="btn border border-secondary rounded-pill px-3 text-primary">Go to Course</button></a>     
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                                            
-                    </c:forEach>  
-                    <div class="col-12">
-                        <div class="d-flex justify-content-center mt-5">
-                            <input type="text" name="index" value="${paging.getIndex()}" hidden>
-                            <input type="text" name="total" value="${paging.getTotalPage()}" hidden>
-                            <input type="text" name="btn" id="btn" value hidden>
-                            <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnHome" value=&Ll;>                                                
-                            <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnPre" value=&laquo;>
-                            <c:forEach var="x" begin="${paging.getPageStart()}" end="${paging.getPageEnd()}">
-                                <c:if test="${paging.getIndex() == x}">
-                                    <button class="btn border-2 border-secondary rounded" style="margin: 0px 5px;background: greenyellow" onclick="movePage(${x})">${x + 1}</button>
-                                </c:if>
-                                <c:if test="${paging.getIndex() != x}">
-                                    <button class="btn border-2 border-secondary rounded" style="margin: 0px 5px" onclick="movePage(${x})">${x + 1}</button>
-                                </c:if>
-                            </c:forEach>
-                            <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnNext" value=&raquo;>
-                            <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnEnd" value=&Gg;>
-                        </div>
+                <div class="col-lg-4 align-items-center">
+                    <div class="counter bg-white rounded p-5">              
+                        <h3 style="color: grey">Details</h3>
+                        <table>
+                            <tr>
+                                <th>ID:</th>
+                                <td><input type="text" name="id" value="${id}" class="form-control border-2 px-4" readonly="true"></td>
+                            </tr>
+                            <tr>
+                                <th>Category Name: </th>
+                                <td><input type="text" name="name" value="${name}" class="form-control border-2 px-4"></td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td><input type="radio" name="status" value="1"
+                                           <c:if test="${status == 1}">checked</c:if> > Active &nbsp;
+                                    <input type="radio" name="status" value="0"
+                                           <c:if test="${status == 0}">checked</c:if> > Inactive &nbsp;</td>
+                            </tr>
+                        </table>
+                        <input type="submit" name="update" value="Update" class="btn border-2 border-secondary" style="margin: 20px 0px">
+                        <br/>${err}
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-1"></div>
-        </div>       
+                <div class="col-lg-8 align-items-center">
+                    <div class="counter bg-white rounded p-5">           
+                        <table style="width: 100%">
+                            <thead>
+                            <th>ID</th>
+                            <th>Category Name</th>
+                            <th>Number of Courses</th>
+                            <th>Edit</th>
+                            <th>Status</th>                           
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${CategoryList}" var="x" begin="${paging.getBegin()}" end="${paging.getEnd() - 1}">
+                                    <tr>
+                                        <td>${x.getCategoryID()}</td>
+                                        <td>${x.getCategoryName()}</td>
+                                        <td>${CourseINS.getCategoryNum(x.getCategoryID())}</td>
+                                        <td><a href="CategoryManage?Edit=${x.getCategoryID()}">Edit</a> </td>
+                                        <td>
+                                            <c:if test="${x.getStatus() == 1}">Active</c:if>
+                                            <c:if test="${x.getStatus() == 0}">Inactive</c:if>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-center mt-5">
+                                <input type="text" name="index" value="${paging.getIndex()}" hidden>
+                                <input type="text" name="total" value="${paging.getTotalPage()}" hidden>
+                                <input type="text" name="btn" id="btn" value hidden>
+                                <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnHome" value=&Ll;>                                                
+                                <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnPre" value=&laquo;>
+                                <c:forEach var="x" begin="${paging.getPageStart()}" end="${paging.getPageEnd()}">
+                                    <c:if test="${paging.getIndex() == x}">
+                                        <button class="btn border-2 border-secondary rounded" style="margin: 0px 5px;background: greenyellow" onclick="movePage(${x})">${x + 1}</button>
+                                    </c:if>
+                                    <c:if test="${paging.getIndex() != x}">
+                                        <button class="btn border-2 border-secondary rounded" style="margin: 0px 5px" onclick="movePage(${x})">${x + 1}</button>
+                                    </c:if>
+                                </c:forEach>
+                                <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnNext" value=&raquo;>
+                                <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnEnd" value=&Gg;>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+
+            </div>
+        </form>
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -323,4 +356,5 @@
     </body>
 
 </html>
+
 

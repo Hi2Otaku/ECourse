@@ -22,7 +22,7 @@ public class UserManage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {                
 
         String statusa = request.getParameter("statusa");
         String statusi = request.getParameter("statusi");
@@ -30,18 +30,30 @@ public class UserManage extends HttpServlet {
         request.setAttribute("statusa", statusa);
         request.setAttribute("statusi", statusi);
 
-        List<User> UserList = new ArrayList<>();
+        List<User> UserList1 = new ArrayList<>();
 
         if (statusa == null && statusi == null) {
-            UserList = UserDAO.INS.getUserList();
+            UserList1 = UserDAO.INS.getUserList();
         } else {
             for (User u : UserDAO.INS.getUserList()) {
                 if (statusa != null && u.getStatus() == 1) {
-                    UserList.add(u);
+                    UserList1.add(u);
                 } else if (statusi != null && u.getStatus() == 0) {
-                    UserList.add(u);
+                    UserList1.add(u);
                 }
             }
+        }
+        
+        String search = request.getParameter("search");
+        request.setAttribute("search", search);
+        
+        List<User> UserList = new ArrayList<>();
+        for (User u : UserList1) {
+            if (search == null) {
+                UserList.add(u);
+            } else if (u.getUserName().toLowerCase().contains(search.toLowerCase())) {
+                UserList.add(u);
+            }            
         }
 
         String sort = request.getParameter("sort");

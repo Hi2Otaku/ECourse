@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +49,8 @@ public class Summary extends HttpServlet {
                 request.setAttribute("CourseID", CourseID);
                 request.setAttribute("LessonID", LessonID);
                 request.setAttribute("QuizID", QuizID);
+                List<Integer> ilist = UserDAO.INS.getTop10AttemptMark(u.getUserID(), CourseID, LessonID, QuizID);
+                request.setAttribute("ilist", ilist);
                 request.getRequestDispatcher("/Web/Summary.jsp").forward(request, response);
             } else {
                 request.getRequestDispatcher("/404.html").forward(request, response);

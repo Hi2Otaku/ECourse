@@ -151,10 +151,10 @@
             <div class="col-lg-3 align-items-center">
                 <div class="counter bg-white rounded p-5">              
                     <h3 style="color: grey">Feature:</h3>
-                    <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px">Categories Manage</button>
-                    <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px">Subjects Manage</button>
-                    <button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 0px">Courses Manage</button>
-                    <button class="btn rounded-pill border border-secondary" style="margin: 10px 0px">Users Manage</button>
+                    <a href="CategoryManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Categories Manage</button></a>
+                    <a href="SubjectManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Subjects Manage</button></a>
+                    <a href="CourseManage"><button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 50px">Courses Manage</button></a>
+                    <a href="UserManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Users Manage</button></a>
                 </div>
             </div>
 

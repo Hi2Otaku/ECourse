@@ -78,6 +78,11 @@
                                     <td><input type="password" name="confirm" value="" placeholder="Confirm" class="form-control border px-4 rounded-pill" required>  </td>
                                 </tr>
                                 <tr>
+                                    <th>Gender </th>
+                                    <td><input type="radio" name="gender" value="0" required="true"> Male &nbsp;
+                                        <input type="radio" name="gender" value="1" required="true"> Female &nbsp;</td>
+                                </tr>
+                                <tr>
                                     <th>Fullname </th>
                                     <td><input type="text" name="fullname" value="" placeholder="Fullname" class="form-control border px-4 rounded-pill" required>  </td>
                                 </tr>
@@ -87,7 +92,7 @@
                                 </tr>
                                 <tr>
                                     <th>Birth Date </th>
-                                    <td><input type="date" name="dob" value="" class="form-control border px-4 rounded-pill" required>  </td>
+                                    <td><input type="date" name="dob" value="" class="form-control border px-4 rounded-pill" max="${date}" required>  </td>
                                 </tr>
                                 <tr>
                                     <th>Security Question: </th>
@@ -100,15 +105,8 @@
                                 <tr>
                                     <th>Answer </th>
                                     <td><input type="text" name="answer" value="" placeholder="Answer" class="form-control border px-4 rounded-pill" required>  </td>
-                                </tr>
-                                <tr>
-                                    <th>You are a(an) </th>
-                                    <td>
-                                        <input type="radio" name="role" value="4" required> Learner &nbsp;
-                                        <input type="radio" name="role" value="2" required> Expert
-                                    </td>
-                                </tr>                                
-                                
+                                </tr>                           
+
                             </table>                             
                         </div>                               
                     </div>      

@@ -156,26 +156,30 @@
         </div>                
         <!-- Single Page Header End -->     
 
-        <form action="CourseManage" id="manage">
 
-            <div class="container-fluid">
-                <div class="col-lg-12 align-items-center">
-                    <div class="counter bg-white rounded p-5">              
-                        <h3 style="color: grey">Feature</h3>
-                        <button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Categories Manage</button>
-                        <button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Subjects Manage</button>
-                        <button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 50px">Courses Manage</button>
-                        <button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Users Manage</button>
-                    </div>
+
+        <div class="container-fluid">
+            <div class="col-lg-12 align-items-center">
+                <div class="counter bg-white rounded p-5">              
+                    <h3 style="color: grey">Feature</h3>
+                    <a href="CategoryManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Categories Manage</button></a>
+                    <a href="SubjectManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Subjects Manage</button></a>
+                    <a href="CourseManage"><button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 50px">Courses Manage</button></a>
+                    <a href="UserManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Users Manage</button></a>
                 </div>
-            </div>        
-
+            </div>
+        </div>        
+        <form action="CourseManage" id="manage">
             <div class="container-fluid py-2 row">            
 
                 <div class="col-lg-3 align-items-center">
                     <div class="counter bg-white rounded p-5">              
 
                         <h3 style="color: grey">Filter</h3>
+
+                        <div class="col-lg-12">
+                            <input type="search" name="search" value="${search}" placeholder="Course Name" style="width: 250px; margin: 20px 0px" class="form-control">
+                        </div>
 
                         <div class="navbar-nav mx-auto">
                             <div class="nav-item dropdown">

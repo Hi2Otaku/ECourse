@@ -11,14 +11,26 @@ package Models;
 public class Category {
     private int CategoryID;
     private String CategoryName;
+    private int Status;
 
     public Category() {
     }
 
-    public Category(int CategoryID, String CategoryName) {
+    public Category(int CategoryID, String CategoryName, int Status) {
         this.CategoryID = CategoryID;
         this.CategoryName = CategoryName;
+        this.Status = Status;
     }
+
+    public int getStatus() {
+        return Status;
+    }
+
+    public void setStatus(int Status) {
+        this.Status = Status;
+    }
+
+    
 
     public int getCategoryID() {
         return CategoryID;

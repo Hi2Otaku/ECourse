@@ -11,14 +11,24 @@ package Models;
 public class Subject {
     private int SubjectID;
     private String SubjectName;
+    private int Status;
 
     public Subject() {
     }
 
-    public Subject(int SubjectID, String SubjectName) {
+    public Subject(int SubjectID, String SubjectName, int Status) {
         this.SubjectID = SubjectID;
         this.SubjectName = SubjectName;
+        this.Status = Status;
     }
+
+    public int getStatus() {
+        return Status;
+    }
+
+    public void setStatus(int Status) {
+        this.Status = Status;
+    }   
 
     public int getSubjectID() {
         return SubjectID;

@@ -145,7 +145,7 @@
 
             <div class="col-lg-3 align-items-center">
                 <div class="counter bg-white rounded p-5">      
-                    <img src="img/avatar.jpg" alt="alt" class="img-fluid w-100 rounded-top"/>                    
+                    <img src="img/avt.jpg" alt="alt" class="img-fluid w-100 rounded-top"/>                    
                     <div style="margin-top: 20%">
                         <h4>${User.getFullName()}</h4>
                         <c:if test="${User.getRole() == 4}">
@@ -178,7 +178,16 @@
                             </tr>                    
                             <tr>
                                 <th>Mail: </th>
-                                <td><input type="text" name="Mail" value="${User.getMail()}" class="form-control border-2 px-4" disabled></td>
+                                <td><input type="email" name="Mail" value="${User.getMail()}" class="form-control border-2 px-4" disabled></td>
+                            </tr>
+                            <tr>
+                                <th>Gender: </th>
+                                <td>
+                                    <input type="radio" name="Gender" value="0"
+                                           <c:if test="${User.getGender() == 0}">checked</c:if> > Male &nbsp;
+                                    <input type="radio" name="Gender" value="1"
+                                           <c:if test="${User.getGender() == 1}">checked</c:if> > Female &nbsp;
+                                </td>
                             </tr>
                             <tr>
                                 <th>Date of Birth: </th>

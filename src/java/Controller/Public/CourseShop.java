@@ -49,11 +49,17 @@ public class CourseShop extends HttpServlet {
                 checkedSubject.add(suj);
             }
         }
+        
+        String search = request.getParameter("search");        
 
         List<Course> CourseList = new ArrayList<>();
         for(Course x : CourseDAO.INS.getCourseList(checkedCategory, checkedSubject)) {
             if (UserDAO.INS.checkOwnCourse(u.getUserID(), x.getCourseID()) == 0) {
-                CourseList.add(x);
+                if (search == null) {
+                    CourseList.add(x);
+                } else if (x.getCourseName().toLowerCase().contains(search.toLowerCase())) {
+                    CourseList.add(x);
+                }                                                 
             }                                
         }
 
@@ -97,9 +103,10 @@ public class CourseShop extends HttpServlet {
             index = total - 1;
         }
 
-        Paging paging = new Paging(CourseList.size(), 6, index);
+        Paging paging = new Paging((CourseList.isEmpty()) ? 1 : CourseList.size(), 6, index);
         paging.calc();
 
+        request.setAttribute("search", search);
         request.setAttribute("paging", paging);
         request.setAttribute("UserINS", UserDAO.INS);
         request.setAttribute("catNum", catNum);
