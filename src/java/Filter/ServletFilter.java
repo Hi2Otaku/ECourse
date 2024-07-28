@@ -106,7 +106,7 @@ public class ServletFilter implements Filter {
         String url = req.getRequestURI();
         User u = (User) ses.getAttribute("User");
         if (u == null) {
-            if (url.contains("Login") || url.contains("Register")) {
+            if (url.contains("Login") || url.contains("Register") || url.contains("Forget") || url.contains("Reset")) {
                 chain.doFilter(request, response);
             } else {
                 res.sendRedirect(req.getContextPath() + "/Login");
@@ -121,14 +121,14 @@ public class ServletFilter implements Filter {
                     }
                 }
                 case 1 -> {
-                    if (url.contains("Cart") || url.contains("Shop") || url.contains("My") || url.contains("Quizing") || url.contains("Review") || url.contains("Summary") || url.contains("Server") || url.contains("CourseContent")) {
+                    if (url.contains("Cart") || url.contains("Shop") || url.contains("My") || url.contains("Quizing") || url.contains("Review") || url.contains("Summary") || url.contains("Server") || url.contains("CourseContent") || url.contains("Register") || url.contains("Reset") || url.contains("CourseDetails")) {
                         res.sendRedirect(req.getContextPath() + "/CourseManage");
                     } else {
                         chain.doFilter(request, response);
                     }
                 }
                 case 4 -> {
-                    if (url.contains("Create") || url.contains("Edit") || url.contains("Import") || url.contains("Server") || url.contains("Manage") || url.contains("Status")){
+                    if (url.contains("Create") || url.contains("Edit") || url.contains("Import") || url.contains("Server") || url.contains("Manage") || url.contains("Status") || url.contains("Register") || url.contains("Reset")){
                         res.sendRedirect(req.getContextPath() + "/CourseShop");
                     } else {
                         chain.doFilter(request, response);

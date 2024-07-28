@@ -194,14 +194,15 @@ public class UserDAO {
             if (num < 0) {
                 num *= -1;
             }
-            while (NumList[num] == 1) {
-                num = random.nextInt() % (QuestionList.size());
+            Question x = QuestionList.get(num);
+            while (NumList[num] == 1 || x.getStatus() == 0) {
+                num = random.nextInt() % (QuestionList.size());                
                 if (num < 0) {
                     num *= -1;
                 }
+                x = QuestionList.get(num);
             }
-            NumList[num] = 1;
-            Question x = QuestionList.get(num);
+            NumList[num] = 1;            
             sql = "Insert Into [UserAnswer] Values (?,?,?,?,?,?,-1)";
             try {
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -601,6 +602,21 @@ public class UserDAO {
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             return "Undefined Error!";
+        }
+    }
+    
+    public void resetPass(int UserID, String pass, String salt) {
+        String sql = "Update [User]"
+                + "\n Set [Password] = ?, salt = ?"
+                + "\n Where [UserID] = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, pass);
+            ps.setString(2, salt);
+            ps.setInt(3, UserID);
+            ps.execute();            
+        } catch (SQLException e) {
+            status = "Error at resetPass " + e.getMessage();
         }
     }
 

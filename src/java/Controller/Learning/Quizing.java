@@ -44,7 +44,7 @@ public class Quizing extends HttpServlet {
         Attempt newAttempt = UserDAO.INS.getNewestAttempt(u.getUserID(), CourseID, LessonID, QuizID);
         
         if (newAttempt.getFinished() == 1) {
-            response.sendRedirect(request.getContextPath() + "/Home");
+            response.sendRedirect(request.getContextPath() + "/MyCourse");
             return;
         }            
         

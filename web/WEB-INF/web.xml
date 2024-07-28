@@ -156,6 +156,22 @@
         <servlet-name>CategoryManage</servlet-name>
         <servlet-class>Controller.Course.CategoryManage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderList</servlet-name>
+        <servlet-class>Controller.Admin.OrderList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ForgetPassword</servlet-name>
+        <servlet-class>Controller.Common.ForgetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPassword</servlet-name>
+        <servlet-class>Controller.Common.ResetPassword</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern/>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -303,5 +319,17 @@
     <servlet-mapping>
         <servlet-name>CategoryManage</servlet-name>
         <url-pattern>/CategoryManage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderList</servlet-name>
+        <url-pattern>/OrderList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgetPassword</servlet-name>
+        <url-pattern>/ForgetPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/ResetPassword</url-pattern>
     </servlet-mapping>
 </web-app>

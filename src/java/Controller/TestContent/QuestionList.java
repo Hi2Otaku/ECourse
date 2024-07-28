@@ -83,7 +83,7 @@ public class QuestionList extends HttpServlet {
             index = total - 1;
         }
 
-        Paging paging = new Paging(QuestionList.size(), 6, index);
+        Paging paging = new Paging((QuestionList.size() == 0) ? 1 : QuestionList.size(), 6, index);
         paging.calc();
 
         request.setAttribute("paging", paging);

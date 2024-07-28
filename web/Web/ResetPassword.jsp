@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Register
-    Created on : Jun 27, 2024, 12:27:25 PM
+    Document   : ForgetPassword
+    Created on : Jul 28, 2024, 4:48:20 AM
     Author     : hi2ot
 --%>
 
@@ -11,7 +11,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Register</title>
+        <title>Forget Password</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -60,54 +60,20 @@
         <!-- Fact Start -->
         <div class="container-fluid py-5 row">      
             <div class="col-lg-3"></div>
-            <div class="col-lg-6">
-                <a href="Login">Back to Login</a>
-                <form action="Register" method="post">      
+            <div class="col-lg-6">                
+                <form action="ResetPassword" method="post">      
+                    <input type="text" name="UserID" value="${UserID}" hidden="true">
                     <div class="form-control bg-white px-4">
                         <div class="col-lg-12 col-md-12 col-xl-12">                            
                             <table style="width: 100%" class="text-center">
                                 <tr>
-                                    <th>Username </th>
-                                    <td><input type="text" name="username" value="" placeholder="Username" class="form-control border px-4 rounded-pill" required>  </td>                                    
-                                </tr>
-                                <tr>
-                                    <th>Password </th>
-                                    <td><input type="password" name="pass" value="" placeholder="Password" class="form-control border px-4 rounded-pill" required>  </td>
-                                </tr>
+                                    <th>New Password </th>
+                                    <td><input type="text" name="password" value="" placeholder="New Password" class="form-control border px-4 rounded-pill" required>  </td>                                    
+                                </tr>                                
                                 <tr>
                                     <th>Confirm </th>
-                                    <td><input type="password" name="confirm" value="" placeholder="Confirm" class="form-control border px-4 rounded-pill" required>  </td>
-                                </tr>
-                                <tr>
-                                    <th>Gender </th>
-                                    <td><input type="radio" name="gender" value="0" required="true"> Male &nbsp;
-                                        <input type="radio" name="gender" value="1" required="true"> Female &nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <th>Fullname </th>
-                                    <td><input type="text" name="fullname" value="" placeholder="Fullname" class="form-control border px-4 rounded-pill" required>  </td>
-                                </tr>
-                                <tr>
-                                    <th>Mail </th>
-                                    <td><input type="email" name="mail" value="" placeholder="Email" class="form-control border px-4 rounded-pill" required>  </td>
-                                </tr>
-                                <tr>
-                                    <th>Birth Date </th>
-                                    <td><input type="date" name="dob" value="" class="form-control border px-4 rounded-pill" max="${date}" required>  </td>
-                                </tr>
-                                <tr>
-                                    <th>Security Question: </th>
-                                    <td><select name="SQ" class="form-control border px-4 rounded-pill bg-white">
-                                            <c:forEach items="${SQuestionList}" var="x">
-                                                <option value="${x.getSecutiryQuestionID()}">${x.getQuestion()}</option>
-                                            </c:forEach>
-                                        </select> </td>
-                                </tr>
-                                <tr>
-                                    <th>Answer </th>
-                                    <td><input type="text" name="answer" value="" placeholder="Answer" class="form-control border px-4 rounded-pill" required>  </td>
+                                    <td><input type="text" name="confirm" value="" placeholder="Confirm" class="form-control border px-4 rounded-pill" required>  </td>
                                 </tr>                           
-
                             </table>                             
                         </div>                               
                     </div>      
@@ -131,3 +97,4 @@
     </body>
 
 </html>
+

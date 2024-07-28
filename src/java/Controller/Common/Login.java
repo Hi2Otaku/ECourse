@@ -30,7 +30,7 @@ public class Login extends HttpServlet {
         HttpSession ses = request.getSession();
         User u = (User) ses.getAttribute("User");
         if (u != null) {
-            response.sendRedirect(request.getContextPath() + "/Home");
+            response.sendRedirect(request.getContextPath() + "/Profile");
         } else {
             request.getRequestDispatcher("Web/Login.jsp").forward(request, response);
         }
@@ -41,7 +41,7 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         HttpSession ses = request.getSession();
         if (ses.getAttribute("User") != null) {
-            response.sendRedirect(request.getContextPath() + "/Home");
+            response.sendRedirect(request.getContextPath() + "/Profile");
         } else {
             String LoginSubmit = request.getParameter("LoginSubmit");
             if (LoginSubmit != null) {
@@ -57,7 +57,7 @@ public class Login extends HttpServlet {
                             return;
                         }
                         ses.setAttribute("User", u);
-                        response.sendRedirect(request.getContextPath() + "/CourseShop");
+                        response.sendRedirect(request.getContextPath() + "/Profile");
                     } else {
                         request.setAttribute("err", UserDAO.INS.LoginCheck(Username, Password));
                         doGet(request, response);

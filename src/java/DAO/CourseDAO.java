@@ -225,6 +225,29 @@ public class CourseDAO {
         return AttemptList;
     }
     
+    public ArrayList<Attempt> getAttempt() {
+        ArrayList<Attempt> AttemptList = new ArrayList<>();
+        String sql = "Select * From [Attempt]";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int UserID = rs.getInt("UserID");
+                int CourseID = rs.getInt("CourseID");
+                int LessonID = rs.getInt("LessonID");
+                int QuizID = rs.getInt("QuizID");
+                int AttemptID = rs.getInt("AttemptID");
+                java.sql.Timestamp tmp1 = rs.getTimestamp("AttemptDate");
+                java.sql.Timestamp tmp2 = rs.getTimestamp("SubmittedDate");
+                int Finished = rs.getInt("Finished");
+                AttemptList.add(new Attempt(UserID, CourseID, LessonID, QuizID, AttemptID, tmp1, tmp2, Finished));
+            }
+        } catch (SQLException e) {
+            status = "Error at getUnfinishedAttempt " + e.getMessage();
+        }
+        return AttemptList;
+    }
+    
     public void updateAttempt(Attempt atm) {
         String sql = "Update [Attempt] Set Finished = 1 Where UserID = ? And CourseID = ? And LessonID = ? And QuizID = ?";
         try {

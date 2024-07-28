@@ -78,18 +78,12 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="Home" class="nav-item nav-link">Home</a>
                             <a href="CourseShop" class="nav-item nav-link">Shop</a>
                             <a href="MyCourse" class="nav-item nav-link active">My Courses</a>                                                            
-                            <a href="Cart" class="nav-item nav-link">Cart</a>                                                                                                            
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="Cart" class="nav-item nav-link">Cart</a>   
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>                                
-                            </a>
-                            <a href="#" class="my-auto">
+                            <a href="Profile" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                         </div>
@@ -101,11 +95,6 @@
 
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6">Quiz Summary</h1>
-            <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="MyCourse">My Course</a></li>
-                <li class="breadcrumb-item"><a href="CourseContent?CourseID=${CourseID}">Course</a></li>                            
-                <li class="breadcrumb-item active text-white">Quiz</li>
-            </ol>
         </div>       
 
         <!-- Bestsaler Product Start -->

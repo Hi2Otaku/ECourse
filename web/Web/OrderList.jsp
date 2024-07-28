@@ -1,6 +1,6 @@
 <%-- 
-    Document   : CategoryManage
-    Created on : Jul 14, 2024, 8:06:43 PM
+    Document   : OrderList
+    Created on : Jul 18, 2024, 5:46:21 AM
     Author     : hi2ot
 --%>
 
@@ -75,7 +75,7 @@
         </div>
         <!-- Spinner End -->               
 
-         <!-- Navbar start -->
+        <!-- Navbar start -->
         <div class="container-fluid fixed-top">
             <div class="container topbar bg-primary d-none d-lg-block">
                 <div class="d-flex justify-content-between">
@@ -98,14 +98,16 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="CategoryManage" class="nav-item nav-link active">Category</a>
-                            <a href="SubjectManage" class="nav-item nav-link">Subject</a>
-                            <a href="CourseManage" class="nav-item nav-link">Course</a>
-                            <a href="UserManage" class="nav-item nav-link">User</a>
-                            <a href="#" class="nav-item nav-link">Chart</a>                            
+                            <a href="Home" class="nav-item nav-link">Home</a>
+                            <a href="CourseManage" class="nav-item nav-link active">Manage</a>
+                            <a href="Chart" class="nav-item nav-link">Chart</a>                            
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <a href="Profile" class="my-auto">
+                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            <a href="#" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x"></i>                                
+                            </a>
+                            <a href="#" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                         </div>
@@ -138,7 +140,11 @@
 
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">Category Manage</h1>
+            <h1 class="text-center text-white display-6">Profile</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="Home">Home</a></li>                
+                <li class="breadcrumb-item active text-white">Profile</li>
+            </ol>
         </div>                
         <!-- Single Page Header End -->     
 
@@ -148,65 +154,105 @@
             <div class="col-lg-12 align-items-center">
                 <div class="counter bg-white rounded p-5">              
                     <h3 style="color: grey">Feature</h3>
-                    <a href="CategoryManage"><button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 50px">Categories Manage</button></a>
+                    <a href="CategoryManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Categories Manage</button></a>
                     <a href="SubjectManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Subjects Manage</button></a>
-                    <a href="CourseManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Courses Manage</button></a>
+                    <a href="CourseManage"><button class="btn btn-primary text-white rounded-pill border border-secondary" style="margin: 10px 50px">Courses Manage</button></a>
                     <a href="UserManage"><button class="btn rounded-pill border border-secondary" style="margin: 10px 50px">Users Manage</button></a>
                 </div>
             </div>
         </div>        
-        <form action="CategoryManage" id="manage">
+        <form action="CourseManage" id="manage">
             <div class="container-fluid py-2 row">            
 
-                <div class="col-lg-4 align-items-center">
+                <div class="col-lg-3 align-items-center">
                     <div class="counter bg-white rounded p-5">              
-                        <h3 style="color: grey">Details</h3>
-                        <table>
-                            <tr>
-                                <th>ID:</th>
-                                <td><input type="text" name="id" value="${id}" class="form-control border-2 px-4" readonly="true"></td>
-                            </tr>
-                            <tr>
-                                <th>Category Name: </th>
-                                <td><input type="text" name="name" value="${name}" class="form-control border-2 px-4"></td>
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                <td><input type="radio" name="status" value="1"
-                                           <c:if test="${status == 1}">checked</c:if> > Active &nbsp;
-                                    <input type="radio" name="status" value="0"
-                                           <c:if test="${status == 0}">checked</c:if> > Inactive &nbsp;</td>
-                            </tr>
-                        </table>
-                        <input type="submit" name="update" value="Update" class="btn border-2 border-secondary" style="margin: 20px 0px">
-                        <br/>${err}
+
+                        <h3 style="color: grey">Filter</h3>
+
+                        <div class="col-lg-12">
+                            <input type="search" name="search" value="${search}" placeholder="Course Name" style="width: 250px; margin: 20px 0px" class="form-control">
+                        </div>
+
+                        <div class="navbar-nav mx-auto">
+                            <div class="nav-item dropdown">
+                                <p class="nav-link dropdown-toggle text-md-start" data-bs-toggle="dropdown" style="color: grey; font-size: 20px">Categories</p> 
+                                <div class="dropdown-menu m-0 rounded-0" style="width: 250px">
+                                    <c:forEach items="${CategoryList}" var="x">    
+                                        <div class="mb-2" style="margin-left: 10px">
+                                            <input type="checkbox" class="me-2" id="category" name="Category${x.getCategoryID()}" value="${x.getCategoryID()}" 
+                                                   <c:if test="${catNum.contains(x.getCategoryID()) == true}"> checked </c:if> >
+                                            <label for="category">${x.getCategoryName()}</label>
+                                        </div>                                                                                                
+                                    </c:forEach>      
+                                </div>
+                            </div>
+                        </div>    
+
+                        <div class="navbar-nav mx-auto">
+                            <div class="nav-item dropdown">
+                                <p class="nav-link dropdown-toggle text-md-start" data-bs-toggle="dropdown" style="color: grey; font-size: 20px">Subjects</p>                                                         
+                                <div class="dropdown-menu m-0 rounded-0" style="width: 250px">
+                                    <c:forEach items="${SubjectList}" var="x">
+                                        <div class="mb-2" style="margin-left: 10px">
+                                            <input type="checkbox" class="me-2" id="Subject-1" name="Subject${x.getSubjectID()}" value="${x.getSubjectID()}"
+                                                   <c:if test="${sujNum.contains(x.getSubjectID()) == true}"> checked </c:if>> 
+                                            <label for="Subject-1"> ${x.getSubjectName()}</label>
+                                        </div>
+                                    </c:forEach>        
+                                </div>
+                            </div>
+                        </div>
+                        <button name="apply" class="btn border-secondary border-2 rounded-pill" onclick="submit()">Apply Filter</button>
                     </div>
                 </div>
 
-                <div class="col-lg-8 align-items-center">
-                    <div class="counter bg-white rounded p-5">           
+                <div class="col-lg-9 align-items-center">
+                    <div class="counter bg-white rounded p-5">                    
                         <table style="width: 100%">
                             <thead>
                             <th>ID</th>
-                            <th>Category Name</th>
-                            <th>Number of Courses</th>
+                            <th>Course Name</th>
+                            <th>Subjects</th>
+                            <th>Categories</th>
+                            <th>Create Date</th>
+                            <th>Price</th>                                                
                             <th>Edit</th>
-                            <th>Status</th>                           
+                            <th>Edit Content</th>
                             </thead>
                             <tbody>
-                                <c:forEach items="${CategoryList}" var="x" begin="${paging.getBegin()}" end="${paging.getEnd() - 1}">
+                                <c:forEach items="${CourseList}" var="x" begin="${paging.getBegin()}" end="${paging.getEnd() - 1}">
                                     <tr>
-                                        <td>${x.getCategoryID()}</td>
-                                        <td>${x.getCategoryName()}</td>
-                                        <td>${CourseINS.getCategoryNum(x.getCategoryID())}</td>
-                                        <td><a href="CategoryManage?Edit=${x.getCategoryID()}">Edit</a> </td>
-                                        <td>
-                                            <c:if test="${x.getStatus() == 1}">Active</c:if>
-                                            <c:if test="${x.getStatus() == 0}">Inactive</c:if>
+                                        <td> ${x.getCourseID()} </td>
+                                        <td> ${x.getCourseName()} </td>
+                                        <td> 
+                                            <div class="navbar-collapse">
+                                                <div class="nav-item dropdown">
+                                                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Subjects</a>
+                                                    <div class="dropdown-menu m-0 rounded-0">
+                                                        <c:forEach items="${CourseINS.getSubjectByCourse(x.getCourseID())}" var="y">
+                                                            <p style="margin: 0px -2px" class="dropdown-item">${y.getSubjectName()}</p>   
+                                                        </c:forEach>                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
+                                        <td> 
+                                            <div class="nav-item dropdown">
+                                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
+                                                <div class="dropdown-menu m-0 rounded-0">
+                                                    <c:forEach items="${CourseINS.getCategoryByCourse(x.getCourseID())}" var="y">
+                                                        <p style="margin: 0px -2px" class="dropdown-item">${y.getCategoryName()}</p>   
+                                                    </c:forEach>   
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>${x.getCreateDate()}</td>
+                                        <td> ${x.getPrice()}$</td>                                                                        
+                                        <td> <a href="EditCourse?CourseID=${x.getCourseID()}">Edit</a> </td>
+                                        <td> <a href="EditContent?CourseID=${x.getCourseID()}">Edit Content</a> </td>
                                     </tr>
                                 </c:forEach>
-                            </tbody>
+                            </tbody>                        
                         </table>
                         <div class="col-12">
                             <div class="d-flex justify-content-center mt-5">
@@ -226,12 +272,17 @@
                                 <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnNext" value=&raquo;>
                                 <input type="submit" class="btn border-2 border-secondary rounded" style="margin: 0px 5px" name="btnEnd" value=&Gg;>
                             </div>
-                        </div>                        
+                        </div>
+                        <a href="CreateCourse" class="btn btn-primary text-white border border-secondary" style="margin: 20px">+ New Course</a>
                     </div>
                 </div>
 
             </div>
         </form>
+
+        <!-- Footer Start -->
+        
+        <!-- Footer End -->
 
         <!-- Copyright Start -->
         <div class="container-fluid copyright bg-dark py-4">
@@ -269,5 +320,3 @@
     </body>
 
 </html>
-
-

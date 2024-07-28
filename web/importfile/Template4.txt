@@ -12,3 +12,17 @@ Ez question
 15
 3
 Exxxxxxx
+10 + 30 = ?
+30
+40
+50
+60
+2
+Ez question
+10 + 5 = ?
+15
+12
+13
+14
+1
+Exxxxxxx

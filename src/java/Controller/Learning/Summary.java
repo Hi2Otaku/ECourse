@@ -76,9 +76,6 @@ public class Summary extends HttpServlet {
 
         Attempt atm = UserDAO.INS.getNewestAttempt(u.getUserID(), CourseID, LessonID, QuizID);
         if (atm == null || atm.getFinished() == 1) {
-            if (atm == null) {
-                UserDAO.INS.updateQuizProgress(u.getUserID(), CourseID, LessonID, QuizID);
-            }
             Attempt NewAttempt = UserDAO.INS.createNewUserQuizAttempt(u.getUserID(), CourseID, LessonID, QuizID);
             UserDAO.INS.createNewQuestionList(u.getUserID(), CourseID, LessonID, QuizID, NewAttempt.getAttemptID());
         }
