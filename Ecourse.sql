@@ -6,7 +6,9 @@ Use ECourse
 Create Table [User](
 	UserID int not null,
 	UserName nvarchar(100) not null unique,
+	salt nvarchar(100) not null,
 	[Password] nvarchar(100) not null, 
+	Gender int not null,
 	Mail nvarchar(100) not null unique,
 	FullName nvarchar(100) not null,
 	DoB Date not null,	
@@ -47,7 +49,7 @@ Create Table [LessonDoc](
 	DocID int not null,
 	[Title] nvarchar(500) not null,
 	[Description] nvarchar(500),
-	[Link] nvarchar(5) not null
+	[Link] nvarchar(100) not null
 	Primary Key (CourseID, LessonID, DocID)
 );
 
@@ -68,7 +70,8 @@ Create Table [Question](
 	QuizID int not null,
 	QuestionID int not null,
 	Question nvarchar(100) not null,
-	Explaination nvarchar(100)
+	Explaination nvarchar(100),
+	[Status] int not null,
 	Primary Key (CourseID, LessonID, QuizID, QuestionID)
 );
 
@@ -116,7 +119,7 @@ Create Table [Feedback](
 	UserID int not null,
 	CourseID int not null,
 	FeedbackID int not null,	
-	Title nvarchar(500) not null,
+	CreateDate date not null,
 	[Description] nvarchar(500) not null,
 	Primary Key (UserID, CourseID, FeedbackID)
 );
@@ -145,6 +148,7 @@ Create Table [OwnCourse](
 Create Table [Category](
 	CategoryID int not null,
 	CategoryName nvarchar(100) not null,
+	[Status] int not null
 	Primary Key (CategoryID)
 );
 
@@ -157,6 +161,7 @@ Create Table [CourseCategory](
 Create Table [Subject](
 	SubjectID int not null,
 	SubjectName nvarchar(100) not null,
+	[Status] int not null
 	Primary Key (SubjectID)
 );
 
@@ -164,6 +169,24 @@ Create Table [CourseSubject](
 	CourseID int not null,
 	SubjectID int not null,
 	Primary Key (CourseID, SubjectID)
+);
+
+Create Table [DocProgress] (
+	UserID int not null,
+	CourseID int not null, 
+	LessonID int not null,
+	DocID int not null,
+	[Status] int not null,
+	Primary Key (UserID, CourseID, LessonID, DocID)
+);
+
+Create Table [QuizProgress] (
+	UserID int not null,
+	CourseID int not null, 
+	LessonID int not null,
+	QuizID int not null,
+	[Status] int not null,
+	Primary Key (UserID, CourseID, LessonID, QuizID)
 );
 
 Alter Table [Attempt] with nocheck
@@ -212,6 +235,14 @@ Alter Table [CourseSubject] with nocheck
 	Add Foreign Key (SubjectID) References [Subject](SubjectID)
 Alter Table [Course] with nocheck
 	Add Foreign Key (UserID) References [User](UserID)
+Alter Table [DocProgress] with nocheck
+	Add Foreign Key (UserID) References [User](UserID)
+Alter Table [QuizProgress] with nocheck
+	Add Foreign Key (UserID) References [User](UserID)
+Alter Table [DocProgress] with nocheck
+	Add Foreign Key (CourseID, LessonID, DocID) References [LessonDoc](CourseID, LessonID, DocID)
+Alter Table [QuizProgress] with nocheck
+	Add Foreign Key (CourseID, LessonID, QuizID) References [Quiz](CourseID, LessonID, QuizID)
 
 Insert Into [SEQuestion] Values 
 (1, 'What do you like most?'),
@@ -219,22 +250,21 @@ Insert Into [SEQuestion] Values
 (3, 'What is your father name?');
 
 Insert Into [User] Values 
-(1, 'admin', 'admin', 'admin@admin.com', 'PHQ', '04-04-2004', 1, 'Nothing', 1, 1),
-(2, 'expert', 'expert', 'expert@expert.com', 'NVL', '01-01-0001', 1, 'Nothing', 2, 1),
-(3, 'sale', 'sale', 'sale@sale.com', 'NLL', '01-01-2001', 1, 'Nothing', 3, 1),
-(4, 'learner', 'learner', 'learner@learner.com', 'NBP', '04-04-2004', 1, 'Nothing', 4, 1),
-(5, 'testcart', 'testcart', 'testcart@testcart.com', 'NVL', '04-04-2004', 1, 'Nothing', 4, 1);
+(0,	'server', 'JXG6Mrp0N4P3mZRc6jdqdQ==', 'YDo4yGPnyucaKgrZpDVx/A==', 0, 'server@mail.com', 'server', '2004-04-04', 2, 'server', 0, 1),
+(1, 'admin', 'Sik3t3sJyIwKyiXhg0nliQ==', 'hR5dp9GHw3sEhqgL2O2aQA==', 1, 'admin@admin.com', 'PHQ', '04-04-2004', 1, 'Nothing', 1, 1),
+(2, 'learner', 'M7SKm8rBe3wDjus9jNmQog==', '9DIWTddISRBjwaBpeRRDIQ==', 1, 'learner@learner.com', 'NBP', '04-04-2004', 1, 'Nothing', 4, 1),
+(3, 'testcart', 'SVkAglOUIb6osRs8zi5IOQ==', 'GsOpy/dpdR4kwix0FSVDIA==', 0, 'testcart@testcart.com', 'NVL', '04-04-2004', 1, 'Nothing', 4, 1);
 
 Insert Into [Subject] Values
-(1, 'Elementary'),
-(2, 'Web Develop'),
-(3, 'Cooking');
+(1, 'Elementary', 1),
+(2, 'Web Develop', 1),
+(3, 'Cooking', 1);
 
 Insert Into [Category] Values
-(1, 'Math'),
-(2, 'English'),
-(3, 'HTML'),
-(4, 'Cooking');
+(1, 'Math', 1),
+(2, 'English', 1),
+(3, 'HTML', 1),
+(4, 'Cooking', 1);
 
 Insert Into [Course] Values 
 (1, 'Math', 15, 'Math for Elementary Student', '06-09-2024', 1),
@@ -244,25 +274,15 @@ Insert Into [Course] Values
 
 Insert Into [CourseSubject] Values
 (1, 1),
-(2, 1);
+(2, 1),
+(3, 3),
+(4, 2);
 
 Insert Into [CourseCategory] Values
 (1, 1),
-(2, 2);
-
-Insert Into [Cart] Values
-(5, 1),
-(5, 2),
-(5, 3),
-(5, 4);
-
-Insert Into [Order] Values
-(1, 4, '11-06-2024', 10),
-(2, 4, '11-06-2024', 15);
-
-Insert Into [OwnCourse] Values
-(1, 4, 1),
-(2, 4, 1);
+(2, 2),
+(3, 4),
+(4, 3);
 
 Insert Into [Lesson] Values 
 (1, 1, 'Math 1', 'Math Lesson 1'),
@@ -277,14 +297,14 @@ Insert Into [Quiz] Values
 (2, 2, 1, 'Final Exam for English 2', 2, 900, '06-09-2024');
 
 Insert Into [Question] Values
-(1, 1, 1, 1, '1 + 1 = ?', 'Nothing'),
-(1, 1, 1, 2, '1 + 2 = ?', 'Nothing'),
-(1, 2, 1, 1, '3 - 1 = ?', 'Nothing'),
-(1, 2, 1, 2, '3 - 2 = ?', 'Nothing'),
-(2, 1, 1, 1, 'You ___ Beautiful', 'Nothing'),
-(2, 1, 1, 2, 'This ___ Cheap', 'Nothing'),
-(2, 2, 1, 1, '___ Banana', 'Nothing'),
-(2, 2, 1, 2, '___ Apple', 'Nothing');
+(1, 1, 1, 1, '1 + 1 = ?', 'Nothing', 1),
+(1, 1, 1, 2, '1 + 2 = ?', 'Nothing', 1),
+(1, 2, 1, 1, '3 - 1 = ?', 'Nothing', 1),
+(1, 2, 1, 2, '3 - 2 = ?', 'Nothing', 1),
+(2, 1, 1, 1, 'You ___ Beautiful', 'Nothing', 1),
+(2, 1, 1, 2, 'This ___ Cheap', 'Nothing', 1),
+(2, 2, 1, 1, '___ Banana', 'Nothing', 1),
+(2, 2, 1, 2, '___ Apple', 'Nothing', 1);
 
 Insert Into [Answer] Values 
 (1, 1, 1, 1, 1, '1', 1),
@@ -328,7 +348,7 @@ Insert Into [Answer] Values
 (2, 2, 1, 2, 4, 'Ten', 1);
 
 Insert Into [Feedback] Values
-(1, 1, 1, 'So Good', 'Worthy Course')
+(1, 1, 1, '06-28-2024', 'Worthy Course')
 
 Insert Into [LessonDoc] Values 
 (1, 1, 1, 'Math Book 1', 'Math book volume 1', 'a.img');

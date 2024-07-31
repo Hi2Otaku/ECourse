@@ -68,11 +68,11 @@
                             <table style="width: 100%" class="text-center">
                                 <tr>
                                     <th>New Password </th>
-                                    <td><input type="text" name="password" value="" placeholder="New Password" class="form-control border px-4 rounded-pill" required>  </td>                                    
+                                    <td><input type="password" name="password" value="" placeholder="New Password" class="form-control border px-4 rounded-pill" required>  </td>                                    
                                 </tr>                                
                                 <tr>
                                     <th>Confirm </th>
-                                    <td><input type="text" name="confirm" value="" placeholder="Confirm" class="form-control border px-4 rounded-pill" required>  </td>
+                                    <td><input type="password" name="confirm" value="" placeholder="Confirm" class="form-control border px-4 rounded-pill" required>  </td>
                                 </tr>                           
                             </table>                             
                         </div>                               

@@ -84,7 +84,7 @@ public class CourseDAO {
     }
     
     public void addCategory(int CategoryID, String CategoryName, int Status) {
-        String sql = "Insert Into [Category] Values (?,?)";
+        String sql = "Insert Into [Category] Values (?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, CategoryID);
@@ -708,6 +708,7 @@ public class CourseDAO {
     
     public static void main(String[] agrs) {
         INS.loadSubjectList();
+        INS.addCategory(INS.loadCategoryList().size() + 1, "Java", 0);
         System.out.println(INS.status);
     }
     
